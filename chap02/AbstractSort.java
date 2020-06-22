@@ -9,7 +9,8 @@ public abstract class AbstractSort {
                 "iostream", "over" };
         show(arr);
         as.sort(arr);
-        assert isSorted(arr) : "Not Sorted!!!";
+        if (!isSorted(arr))
+            System.out.println("Not Sorted!!!");
         show(arr);
     }
 
