@@ -1,7 +1,7 @@
 public class SelectionSort extends AbstractSort {
 
     public static void main(String[] args) {
-        AbstractSort.main(new SelectionSort());
+        AbstractSort.test(new SelectionSort());
     }
 
     @Override

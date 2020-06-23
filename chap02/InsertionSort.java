@@ -1,7 +1,7 @@
 public class InsertionSort extends AbstractSort {
 
     public static void main(String[] args) {
-        AbstractSort.main(new InsertionSort());
+        AbstractSort.test(new InsertionSort());
     }
 
     @Override
