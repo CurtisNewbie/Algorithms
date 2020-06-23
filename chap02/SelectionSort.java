@@ -6,8 +6,6 @@ public class SelectionSort extends AbstractSort {
 
     @Override
     void sort(Comparable[] arr) {
-        if (arr.length == 0)
-            return;
         int min;
         for (int j = 0; j < arr.length; j++) {
             min = j;
