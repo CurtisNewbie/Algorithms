@@ -11,7 +11,7 @@ public abstract class AbstractSort {
         // Plot.plot(arr, false);
 
         System.out.printf(">>> Testing: %s\n", as.getClass().getName());
-        System.out.println(">>> Before Testing:\n");
+        System.out.println(">>> Before Testing:");
         show(arr);
 
         long start = System.currentTimeMillis();
@@ -22,11 +22,13 @@ public abstract class AbstractSort {
 
         System.out.println("\n>>> After Testing:");
         show(arr);
-        System.out.printf("\n>>> Took: %d miliseconds, Sample size: %d", end - start, arr.length);
+
+        System.out.printf("\n>>> Took: %d miliseconds, Sample size: %d\n", end - start, arr.length);
         if (!isSorted(arr)) {
-            System.out.println("Not Sorted!!!");
+            System.out.println(">>> Not Sorted!!!");
             return false;
         } else {
+            System.out.println(">>> Sorted!!!");
             return true;
         }
     }
