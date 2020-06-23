@@ -2,7 +2,7 @@
 import edu.princeton.cs.algs4.*;
 
 public class Plot {
-    public static void plots(final Integer[] arr, boolean sorted) {
+    public static void plot(final Integer[] arr, boolean sorted) {
         if (sorted)
             StdDraw.setPenColor(StdDraw.RED);
         int len = arr.length;
