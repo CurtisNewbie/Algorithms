@@ -11,9 +11,11 @@ public abstract class AbstractSort {
                 41, 65, 22, 4, 35, 97, 31, 18, 76, 11, 24, 90, 48, 19, 64, 92, 61, 31, 51, 55, 16, 59, 79, 25, 11, 31,
                 23, 17, 79, 11, 12, 92, 59, 70, 85, 61, 12, 88, 6, 22, 80, 19, 27, 77, 42, 54, 62, 19, 79, 37, 34, 12,
                 19, 4, 71, 60, 7, 54, 23, 35, 48, 53, 55, 8, 30, 17, 67, 80, 46, 59, 8, 13, 10, 54, 64, 46, 6, 68, 20 };
+        // Plot.plot(arr, false);
         show(arr);
         System.out.println();
         as.sort(arr);
+        // Plot.plot(arr, true);
         if (!isSorted(arr))
             System.out.println("Not Sorted!!!");
         show(arr);
