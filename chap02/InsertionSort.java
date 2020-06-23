@@ -6,12 +6,17 @@ public class InsertionSort extends AbstractSort {
 
     @Override
     void sort(Comparable[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
+        sort(arr, 0, arr.length - 1);
+    }
+
+    void sort(Comparable[] arr, int l, int h) {
+        for (int i = l; i < h; i++) {
             int j = i + 1;
             while (j > 0 && lessThan(arr[j], arr[j - 1])) {
                 swap(arr, j, j - 1);
                 j--;
             }
         }
+
     }
 }
