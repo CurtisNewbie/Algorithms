@@ -4,6 +4,8 @@ public class Node<K extends Comparable<K>, V> {
     private V v;
     private Node<K, V> left = null;
     private Node<K, V> right = null;
+    /** Whether the colour of the path to its parent is red */
+    public boolean isRed = false;
 
     public Node(K k, V v) {
         this.k = k;
@@ -36,6 +38,10 @@ public class Node<K extends Comparable<K>, V> {
 
     public K getKey() {
         return k;
+    }
+
+    public void setKey(K k) {
+        this.k = k;
     }
 
     @Override
