@@ -4,12 +4,21 @@ public class Node<K extends Comparable<K>, V> {
     private V v;
     private Node<K, V> left = null;
     private Node<K, V> right = null;
+    private Node<K, V> next = null;
     /** Whether the colour of the path to its parent is red */
     public boolean isRed = false;
 
     public Node(K k, V v) {
         this.k = k;
         this.v = v;
+    }
+
+    public Node<K, V> getNext() {
+        return next;
+    }
+
+    public void setNext(Node<K, V> next) {
+        this.next = next;
     }
 
     public Node<K, V> getLeft() {
