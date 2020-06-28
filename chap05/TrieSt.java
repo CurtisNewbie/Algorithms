@@ -47,6 +47,7 @@ public class TrieSt {
         st.delete(data[1]);
         System.out.printf("Contains '%s': %b\n", data[1], st.contains(data[1]));
         System.out.println("In TrieSt: " + st.keys().toString());
+        System.out.printf("Size of TrieSt: %d\n", st.size());
     }
 
     public void delete(String key) {
@@ -55,8 +56,14 @@ public class TrieSt {
 
     private Node delete(Node n, String key, int d) {
         // not exists at all
-        if (n == null || (d == key.length() && n.v != 0))
+        if (n == null)
             return null;
+        // remove current node
+        if (d == key.length() && n.v != 0) {
+            size--;
+            return null;
+        }
+
         if (d < key.length()) {
             n.next[key.charAt(d)] = delete(n.next[key.charAt(d)], key, d + 1);
         }
