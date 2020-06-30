@@ -9,14 +9,14 @@ import java.util.*;
  * At the end of the node for the string, a number is assigned to it, which
  * simply indicates the order in which it's added. E..g, 1 for the first string
  * added, 2 for the second, etc. Such number is meaningless, but it's used to
- * identify whether the given key exists in the ADT, and it helps records the
+ * identify whether the given key exists in the ADT, and it helps record the
  * size of strings.
  * <p>
  * Space Complexity: O(R * n * W), where W is the average key length
  * <p>
  * Time Complexity: O(W), where W is the average key length
  * <p>
- * Time Complexity is irrelavant to the number of strings in the trie
+ * Time Complexity is irrelavant to the number of strings in the Trie
  * 
  * 
  */
@@ -112,7 +112,7 @@ public class TrieSt {
         return searchLpf(n.next[s.charAt(d)], s, d + 1, length);
     }
 
-    /** Keys that partial or fully matches, simple regex that allows '.' */
+    /** Keys that match a simple regex that allows '.' */
     public Iterable<String> keysThatMatch(String pat) {
         Queue<String> q = new LinkedList<>();
         keysThatMatch(root, "", pat, q);
