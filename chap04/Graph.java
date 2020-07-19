@@ -13,7 +13,7 @@ public class Graph {
     @SuppressWarnings("unchecked")
     public Graph(int v) {
         this.V = v;
-        adjacencyList = (ArrayList<Integer>[]) new List[vertices()];
+        adjacencyList = (ArrayList<Integer>[]) new ArrayList[vertices()];
         initAdjList(vertices());
     }
 
