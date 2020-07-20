@@ -11,6 +11,7 @@ public class DepthFirstOrder {
     public DepthFirstOrder(Digraph g) {
         preOrder = new LinkedList<>();
         postOrder = new LinkedList<>();
+        reversePostOrder = new LinkedList<>();
         marked = new boolean[g.vertices()];
         for (int i = 0; i < g.vertices(); i++) {
             if (!marked[i])
