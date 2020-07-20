@@ -36,6 +36,10 @@ public class DirectedDFS {
         return list;
     }
 
+    public boolean canReach(int w) {
+        return marked[w];
+    }
+
     public static void main(String[] args) {
         String fname = "tinyDG.txt";
         Digraph g = new Digraph(fname);
