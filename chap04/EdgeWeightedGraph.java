@@ -39,7 +39,7 @@ public class EdgeWeightedGraph {
         E++;
     }
 
-    public Iterable<Edge> edges(int v) {
+    public Iterable<Edge> edges() {
         List<Edge> l = new ArrayList<>(E);
         for (List<Edge> el : adjacencyList)
             el.forEach(e -> l.add(e));
@@ -66,4 +66,3 @@ public class EdgeWeightedGraph {
         System.out.println(weg.toString());
     }
 }
-
