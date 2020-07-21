@@ -4,9 +4,9 @@ import java.nio.file.*;
 
 public class EdgeWeightedGraph {
 
-    private int V;
-    private int E;
-    private List<Edge>[] adjacencyList;
+    protected int V;
+    protected int E;
+    protected List<Edge>[] adjacencyList;
 
     @SuppressWarnings("unchecked")
     public EdgeWeightedGraph(String fname) {

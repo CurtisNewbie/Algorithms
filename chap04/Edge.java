@@ -1,5 +1,5 @@
 /**
- * Undirected Edge
+ * Undirected Edge or Directed Edge (implementation is basically the same)
  */
 public class Edge implements Comparable<Edge> {
     private final int v;
@@ -13,14 +13,14 @@ public class Edge implements Comparable<Edge> {
     }
 
     /**
-     * Return v in v-w
+     * Return v in v-w or v->w
      */
     public int v() {
         return v;
     }
 
     /**
-     * Return w in v-w
+     * Return w in v-w or v->w
      */
     public int w() {
         return w;
