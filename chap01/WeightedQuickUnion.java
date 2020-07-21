@@ -12,6 +12,10 @@ public class WeightedQuickUnion implements UnionFind {
     public WeightedQuickUnion(final int numOfElements) {
         root = new int[numOfElements];
         weight = new int[numOfElements];
+        for (int i = 0; i < numOfElements; i++) {
+            root[i] = i;
+            weight[i] = 1;
+        }
         count = numOfElements;
     }
 
