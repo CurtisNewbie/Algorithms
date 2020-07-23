@@ -33,6 +33,13 @@ public class EdgeWeightedGraph {
         return adjacencyList[v];
     }
 
+    public Iterable<Integer> adjVertices(int v) {
+        List<Integer> neighbours = new ArrayList<>();
+        Iterable<Edge> el = adjacent(v);
+        el.forEach(e -> neighbours.add(e.w()));
+        return neighbours;
+    }
+
     public void addEdge(Edge e) {
         adjacencyList[e.v()].add(e);
         adjacencyList[e.w()].add(e);

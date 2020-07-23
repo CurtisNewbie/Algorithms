@@ -11,6 +11,12 @@ public class Topological {
         }
     }
 
+    public Topological(EdgeWeightedDigraph g) {
+        if (!new DirectedCycle(g).hasCycle()) {
+            topologicalOrder = new DepthFirstOrder(g).reversePostOrder();
+        }
+    }
+
     public boolean isTopological() {
         return topologicalOrder != null;
     }

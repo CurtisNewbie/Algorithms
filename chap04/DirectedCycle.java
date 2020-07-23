@@ -6,10 +6,21 @@ public class DirectedCycle {
     private boolean[] onStack;
     private Stack<Integer> cycle = null;
 
+    private DirectedCycle(int vertices) {
+        parentOf = new int[vertices];
+        marked = new boolean[vertices];
+        onStack = new boolean[vertices];
+    }
+
     public DirectedCycle(Digraph g) {
-        parentOf = new int[g.vertices()];
-        marked = new boolean[g.vertices()];
-        onStack = new boolean[g.vertices()];
+        this(g.vertices());
+        for (int v = 0; v < g.vertices(); v++)
+            if (!marked[v])
+                dfs(g, v);
+    }
+
+    public DirectedCycle(EdgeWeightedDigraph g) {
+        this(g.vertices());
         for (int v = 0; v < g.vertices(); v++)
             if (!marked[v])
                 dfs(g, v);
@@ -19,6 +30,27 @@ public class DirectedCycle {
         marked[v] = true;
         onStack[v] = true; // in current path
         for (int w : g.adjacent(v)) {
+            if (hasCycle())
+                return;
+            else if (!marked[w]) {
+                parentOf[w] = v;
+                dfs(g, w);
+            } else if (onStack[w]) { // cycle detected
+                cycle = new Stack<>();
+                for (int x = v; x != w; x = parentOf[x]) {
+                    cycle.push(x);
+                }
+                cycle.push(w);
+                cycle.push(v);
+            }
+        }
+        onStack[v] = false;
+    }
+
+    private void dfs(EdgeWeightedDigraph g, int v) {
+        marked[v] = true;
+        onStack[v] = true; // in current path
+        for (int w : g.adjVertices(v)) {
             if (hasCycle())
                 return;
             else if (!marked[w]) {
