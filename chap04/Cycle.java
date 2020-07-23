@@ -30,8 +30,9 @@ public class Cycle {
     }
 
     public static void main(String[] args) {
-        System.out.println("Graph: notConnectedG.txt");
-        Graph g1 = new Graph(Paths.get("notConnectedG.txt"));
+        String name = "../demodata/notConnectedG.txt";
+        System.out.printf("Graph: %s\n", name);
+        Graph g1 = new Graph(Paths.get(name));
         System.out.printf("Graph: %s", g1.toString());
         System.out.printf("Graph is connected: %b\n", new DFS(g1, 0).count() == g1.vertices());
         Cycle c = new Cycle(g1);

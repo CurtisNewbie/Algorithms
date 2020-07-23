@@ -46,7 +46,7 @@ public class BFSPaths {
     }
 
     public static void main(String[] args) {
-        Graph g = new Graph(Paths.get("connectedG.txt"));
+        Graph g = new Graph(Paths.get("../demodata/connectedG.txt"));
         BFSPaths paths = new BFSPaths(g, 0);
         System.out.printf("Has path from 0 to 4? %b\n", paths.hasPathTo(4));
         System.out.printf("Path from 0 to 4: %s\n", paths.pathTo(4).toString());

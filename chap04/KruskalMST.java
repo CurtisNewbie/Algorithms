@@ -29,7 +29,7 @@ public class KruskalMST {
     }
 
     public static void main(String[] args) {
-        String fname = "tinyEWG.txt";
+        String fname = "../demodata/tinyEWG.txt";
         EdgeWeightedGraph weg = new EdgeWeightedGraph(fname);
         System.out.println(weg.toString());
         KruskalMST mst = new KruskalMST(weg);

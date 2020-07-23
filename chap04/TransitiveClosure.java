@@ -21,7 +21,7 @@ public class TransitiveClosure {
     }
 
     public static void main(String[] args) {
-        String fname = "tinyDG.txt";
+        String fname = "../demodata/tinyDG.txt";
         Digraph g = new Digraph(fname);
         System.out.println("Graph: " + fname);
         System.out.println(g.toString());

@@ -34,14 +34,15 @@ public class Bipartite {
     }
 
     public static void main(String[] args) {
-        String test = "bipartite.txt";
+        String test = "../demodata/bipartite.txt";
         System.out.printf("Graph: %s\n", test);
         Graph g1 = new Graph(Paths.get(test));
         System.out.printf("Graph: %s", g1.toString());
         System.out.printf("Is Bipartite: %b\n", new Bipartite(g1).isBipartite());
 
-        System.out.println("\nGraph: notBipartite.txt");
-        Graph g2 = new Graph(Paths.get("notBipartite.txt"));
+        test = "../demodata/notBipartite.txt";
+        System.out.printf("\nGraph: $s\n", test);
+        Graph g2 = new Graph(Paths.get(test));
         System.out.printf("Graph: %s", g2.toString());
         System.out.printf("Is Bipartite: %b\n", new Bipartite(g2).isBipartite());
     }

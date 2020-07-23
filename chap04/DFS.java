@@ -37,13 +37,15 @@ public class DFS {
     }
 
     public static void main(String[] args) {
-        System.out.println("Graph: notConnectedG.txt");
-        Graph g1 = new Graph(Paths.get("notConnectedG.txt"));
+        String name = "../demodata/notConnectedG.txt";
+        System.out.printf("Graph: %s\n", name);
+        Graph g1 = new Graph(Paths.get(name));
         System.out.printf("Graph: %s", g1.toString());
         System.out.printf("Graph is connected: %b\n", new DFS(g1, 0).count() == g1.vertices());
 
-        System.out.println("\nGraph: connectedG.txt");
-        Graph g2 = new Graph(Paths.get("connectedG.txt"));
+        name = "../demodata/connectedG.txt";
+        System.out.printf("Graph: %s\n", name);
+        Graph g2 = new Graph(Paths.get(name));
         System.out.printf("Graph: %s", g2.toString());
         System.out.printf("Graph is connected: %b\n", new DFS(g2, 0).count() == g2.vertices());
     }

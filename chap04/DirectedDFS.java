@@ -41,13 +41,12 @@ public class DirectedDFS {
     }
 
     public static void main(String[] args) {
-        String fname = "tinyDG.txt";
+        String fname = "../demodata/tinyDG.txt";
         Digraph g = new Digraph(fname);
         System.out.println("Graph: " + fname);
         System.out.println(g.toString());
         for (int i = 0; i < g.vertices(); i++) {
-            System.out.printf("Vertex: %d can reach to: '%s'\n", i,
-                    new DirectedDFS(g, i).reachable().toString());
+            System.out.printf("Vertex: %d can reach to: '%s'\n", i, new DirectedDFS(g, i).reachable().toString());
         }
         List<Integer> sources = Arrays.asList(1, 2, 6);
         System.out.printf("Vertices: %s can reach to: '%s'\n", sources.toString(),

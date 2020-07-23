@@ -44,9 +44,8 @@ public class DirectedCycle {
         return cycle;
     }
 
-
     public static void main(String[] args) {
-        String fname = "dgCycle.txt";
+        String fname = "../demodata/dgCycle.txt";
         Digraph g = new Digraph(fname);
         System.out.println("Graph: " + fname);
         System.out.println(g.toString());

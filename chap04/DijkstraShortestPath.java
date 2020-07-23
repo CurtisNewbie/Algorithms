@@ -117,7 +117,7 @@ public class DijkstraShortestPath {
     }
 
     public static void main(String[] args) {
-        String fname = "tinyEWD.txt";
+        String fname = "../demodata/tinyEWD.txt";
         EdgeWeightedDigraph g = new EdgeWeightedDigraph(fname);
         System.out.println(fname + ", " + g.toString());
 

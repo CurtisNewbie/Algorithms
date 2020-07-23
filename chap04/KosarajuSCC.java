@@ -65,7 +65,7 @@ public class KosarajuSCC {
     }
 
     public static void main(String[] args) {
-        String fname = "tinyDG.txt";
+        String fname = "../demodata/tinyDG.txt";
         Digraph g = new Digraph(fname);
         System.out.printf("Graph: %s\n%s", fname, g.toString());
         KosarajuSCC kosaraju = new KosarajuSCC(g);
