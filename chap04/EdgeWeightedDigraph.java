@@ -6,6 +6,10 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
         super(filename);
     }
 
+    public EdgeWeightedDigraph(int V) {
+        super(V);
+    }
+
     @Override
     public void addEdge(Edge e) {
         adjacencyList[e.v()].add(e);

@@ -23,6 +23,14 @@ public class EdgeWeightedGraph {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public EdgeWeightedGraph(int V) {
+        this.V = V;
+        this.E = 0;
+        adjacencyList = (List<Edge>[]) new ArrayList[vertices()];
+        initAdjList(vertices());
+    }
+
     private void initAdjList(int v) {
         for (int i = 0; i < vertices(); i++) {
             adjacencyList[i] = new ArrayList<>();
