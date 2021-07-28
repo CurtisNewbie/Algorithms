@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.Stack;
 
 public class DijkstraDoubleStack {
 
