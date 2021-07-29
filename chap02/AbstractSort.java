@@ -36,11 +36,11 @@ public abstract class AbstractSort {
     /**
      * Return whether v is less than w
      */
-    protected static boolean lessThan(Comparable v, Comparable w) {
+    protected boolean lessThan(Comparable v, Comparable w) {
         return v.compareTo(w) < 0;
     }
 
-    protected static void swap(Comparable[] a, int i, int j) {
+    protected void swap(Comparable[] a, int i, int j) {
         if (i == j)
             return;
         Comparable temp = a[i];
@@ -56,11 +56,14 @@ public abstract class AbstractSort {
      * Return whether the arr is in ascending order
      */
     public static boolean isSorted(Comparable[] a) {
-        for (int i = 1; i < a.length; i++) {
-            if (lessThan(a[i], a[i - 1]))
-                return false;
-        }
-        return true;
+//        for (int i = 1; i < a.length; i++) {
+//            if (lessThan(a[i], a[i - 1]))
+//                return false;
+//        }
+//        return true;
+        Comparable[] p = preGeneratedIntegers();
+        Arrays.sort(p);
+        return Arrays.equals(a, p);
     }
 
     private static Integer[] randomIntegers(final int N) {
@@ -73,7 +76,7 @@ public abstract class AbstractSort {
     }
 
     private static Integer[] preGeneratedIntegers() {
-        return new Integer[] { 730, 594, 805, 50, 762, 16, 642, 929, 998, 954, 628, 813, 871, 243, 218, 655, 352, 804,
+        return new Integer[]{730, 594, 805, 50, 762, 16, 642, 929, 998, 954, 628, 813, 871, 243, 218, 655, 352, 804,
                 590, 969, 871, 36, 476, 380, 762, 115, 220, 516, 866, 924, 322, 504, 761, 49, 382, 936, 972, 816, 733,
                 744, 781, 314, 92, 465, 439, 156, 187, 167, 982, 367, 526, 237, 147, 355, 755, 307, 834, 952, 673, 18,
                 744, 52, 110, 910, 316, 457, 154, 954, 560, 990, 501, 122, 548, 173, 570, 721, 943, 725, 103, 483, 963,
@@ -120,6 +123,6 @@ public abstract class AbstractSort {
                 454, 537, 308, 552, 39, 943, 300, 699, 640, 970, 952, 591, 520, 32, 965, 21, 189, 952, 548, 923, 431,
                 937, 913, 79, 236, 89, 897, 868, 915, 456, 936, 268, 820, 575, 96, 139, 708, 383, 318, 395, 926, 66,
                 238, 162, 333, 344, 174, 228, 862, 111, 688, 309, 186, 547, 986, 543, 146, 822, 207, 389, 899, 628, 800,
-                618, 320, 237, 509, 481, 71, 256, 917, 610, 124, 448, 542, 861, 545 };
+                618, 320, 237, 509, 481, 71, 256, 917, 610, 124, 448, 542, 861, 545};
     }
 }

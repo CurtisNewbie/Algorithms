@@ -19,21 +19,34 @@ public class QuickSort extends AbstractSort {
         }
     }
 
-    int partition(Comparable[] arr, int l, int r) {
-        int pivot = l;
-        int lp = pivot, hp = r + 1;
-        while (true) {
-            while (lessThan(arr[++lp], arr[pivot]) && lp < r)
-                ;
-            while (lessThan(arr[pivot], arr[--hp])) // we don't need to check hp > l, because arr[pivot] is arr[l]
-                ;
+    int partition(Comparable[] arr, int lower, int upper) {
+        // pointers
+        int lp = lower, hp = upper + 1;
+        // the value to compare with
+        Comparable pivot = arr[lower];
 
-            if (lp < hp)
-                swap(arr, lp, hp);
-            else
+        while (true) {
+            // find value greater than pivot
+            while (lessThan(arr[++lp], pivot))
+                if (lp == upper)
+                    break;
+
+            // find value less than pivot
+            while (lessThan(pivot, arr[--hp]))
+                if (hp == lower)
+                    break;
+
+            // pivot should be at hp
+            if (lp >= hp)
                 break;
+
+            /*
+             * swap them, such that the value less than pivot is on the left hand side
+             * and the value greater than pivot is on the right hand side
+             * */
+            swap(arr, lp, hp);
         }
-        swap(arr, hp, pivot);
+        swap(arr, lower, hp);
         return hp;
     }
 }
