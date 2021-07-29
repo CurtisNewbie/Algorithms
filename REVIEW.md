@@ -1023,7 +1023,7 @@ void qs(Comparable[] arr, int l, int h) {
 
 (p.195)
 
-In this example, A Max/Min PriorityQueue is implemented using Heap. A node can at most have two nodes, in case of a MaxPriorityQueue, the parent node must be greater than the child nodes.
+In this example, A Max/Min PriorityQueue is implemented using Heap. A node can at most have two child nodes, in case of a MaxPriorityQueue, the parent node must be greater than the child nodes.
 
 When a MaxPQ (in this case, a Max heap) is implemented using an array, we traverse the heap by doing some simple math. For convenience, the first element `pq[0]` is always null (i.e., it's not used at all).
 
