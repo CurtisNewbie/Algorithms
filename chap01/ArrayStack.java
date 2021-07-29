@@ -1,11 +1,18 @@
 import java.util.Iterator;
 
 public class ArrayStack<T> implements Stack<T> {
-    private T[] a;
+
+    private static final int MIN_CAPACITY = 1 << 4;
+
+    private T[] arr;
     private int size;
 
-    public ArrayStack(int fixedCapacity) {
-        this.a = (T[]) new Object[fixedCapacity];
+    public ArrayStack() {
+        arr = (T[]) new Object[MIN_CAPACITY];
+    }
+
+    public ArrayStack(int capacity) {
+        arr = (T[]) new Object[capacity];
     }
 
     @Override
@@ -16,13 +23,13 @@ public class ArrayStack<T> implements Stack<T> {
     private void resize(int newCapacity) {
         T[] ra = (T[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
-            ra[i] = a[i];
+            ra[i] = arr[i];
         }
-        this.a = ra;
+        this.arr = ra;
     }
 
     private boolean isFull() {
-        return this.size == a.length;
+        return this.size == arr.length;
     }
 
     @Override
@@ -31,23 +38,23 @@ public class ArrayStack<T> implements Stack<T> {
     }
 
     public int capacity() {
-        return a.length;
+        return arr.length;
     }
 
     @Override
     public void push(T s) {
         if (isFull()) {
-            resize(a.length * 2);
+            resize(capacity() << 1); // expand
         }
-        a[size++] = s;
+        arr[size++] = s;
     }
 
     @Override
     public T pop() {
-        T t = a[--size];
-        a[size] = null; // for GC
-        if (size > 0 && size == a.length / 4)
-            resize(a.length / 2);
+        T t = arr[--size];
+        arr[size] = null; // for GC
+        if (capacity() > MIN_CAPACITY && size == capacity() >> 2)
+            resize(capacity() >> 1); // shrink
         return t;
     }
 
@@ -60,9 +67,6 @@ public class ArrayStack<T> implements Stack<T> {
 
         private int i = size;
 
-        private ArrayStackIterator() {
-        }
-
         @Override
         public boolean hasNext() {
             return i > 0;
@@ -70,7 +74,7 @@ public class ArrayStack<T> implements Stack<T> {
 
         @Override
         public T next() {
-            return a[--i];
+            return arr[--i];
         }
     }
 }

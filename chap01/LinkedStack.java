@@ -5,9 +5,6 @@ public class LinkedStack<T> implements Stack<T> {
     private Node<T> head = null;
     private int size = 0;
 
-    public LinkedStack() {
-    }
-
     @Override
     public boolean isEmpty() {
         return head == null;
@@ -21,21 +18,21 @@ public class LinkedStack<T> implements Stack<T> {
     @Override
     public void push(T t) {
         size++;
-        Node<T> nextHead = new Node<>(t);
-        nextHead.next = head;
-        head = nextHead;
+        Node<T> newHead = new Node<>(t);
+        newHead.next = head;
+        head = newHead;
     }
 
     @Override
     public T pop() {
         if (head == null) {
             return null;
-        } else {
-            size--;
-            T t = head.val;
-            head = head.next;
-            return t;
         }
+
+        T t = head.val;
+        head = head.next;
+        size--;
+        return t;
     }
 
     @Override
@@ -47,9 +44,6 @@ public class LinkedStack<T> implements Stack<T> {
 
         private Node<T> root = head;
 
-        private LinkedIterator() {
-        }
-
         @Override
         public boolean hasNext() {
             return root != null;
@@ -57,13 +51,9 @@ public class LinkedStack<T> implements Stack<T> {
 
         @Override
         public T next() {
-            if (root == null) {
-                return null;
-            } else {
-                T t = root.val;
-                root = root.next;
-                return t;
-            }
+            T t = root.val;
+            root = root.next;
+            return t;
         }
     }
 }

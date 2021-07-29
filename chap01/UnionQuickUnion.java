@@ -1,6 +1,6 @@
 /**
- * UnionQuick implementation that treats the int[] array as a way to traverse
- * back to each element's root. I.e., a tree is created for each element
+ * UnionQuick implementation that treats the int[] array as a way to traverse back to each element's root. I.e., a tree
+ * is created for each element
  */
 public class UnionQuickUnion implements UnionFind {
 
@@ -9,6 +9,9 @@ public class UnionQuickUnion implements UnionFind {
 
     public UnionQuickUnion(final int numOfElements) {
         this.root = new int[numOfElements];
+        for (int i = 0; i < numOfElements; i++) {
+            root[i] = i; // points to itself
+        }
         this.count = numOfElements;
     }
 
@@ -43,10 +46,12 @@ public class UnionQuickUnion implements UnionFind {
         }
         int rootP = find(p);
         int rootQ = find(q);
+
         // connect root of p to the tree rooted at q's root
         // i.e., connect these two sub-trees
-        if (rootP != rootQ)
+        if (rootP != rootQ) {
             root[rootP] = rootQ;
-        count--;
+            count--;
+        }
     }
 }

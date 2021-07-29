@@ -1,46 +1,45 @@
-import java.util.Scanner;
 import java.util.Stack;
 
+/**
+ * @author yongjie.zhuang
+ */
 public class DijkstraDoubleStack {
 
-    private static Scanner sc = new Scanner(System.in);
-
     public static void main(String[] args) {
-        String cal = sc.nextLine();
-        System.out.println("Calculating: " + cal);
-        System.out.println("Result: " + evaluate(cal));
+        String expr = "( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) )";
+        System.out.printf("%s = %f", expr, interpret(expr));
     }
 
-    public static double evaluate(String calc) {
-        Stack<String> oper = new Stack<>();
-        Stack<Double> vals = new Stack<>();
-        for (int i = 0; i < calc.length(); i++) {
-            char c = calc.charAt(i);
-            if (c == '+' || c == '-' || c == '*' || c == '/') {
-                oper.push("" + c);
-            } else if (c == '(' || c == ' ') {
-                // do nothing
-            } else if (c == ')') {
-                double curr = vals.pop();
-                char o = oper.pop().charAt(0);
-                switch (o) {
-                    case '+':
-                        curr += vals.pop();
-                        break;
-                    case '-':
-                        curr -= vals.pop();
-                        break;
-                    case '*':
-                        curr *= vals.pop();
-                        break;
-                    case '/':
-                        curr /= vals.pop();
-                }
-                vals.push(curr);
+
+    public static double interpret(String expr) {
+        String[] tokens = expr.split(" ");
+        Stack<String> operator = new Stack<>();
+        Stack<Double> values = new Stack<>();
+
+        for (String token : tokens) {
+            if (token.trim().isEmpty() || token.equals("("))
+                continue;
+
+            if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/"))
+                operator.push(token);
+            else if (token.equals(")")) {
+                String oper = operator.pop();
+                double operandLeft = values.pop();
+                if (oper.equals("+"))
+                    operandLeft += values.pop();
+                else if (oper.equals("-"))
+                    operandLeft -= values.pop();
+                else if (oper.equals("*"))
+                    operandLeft *= values.pop();
+                else if (oper.equals("/"))
+                    operandLeft /= values.pop();
+                else
+                    throw new IllegalStateException("Unknown operator: " + oper);
+                values.push(operandLeft);
             } else {
-                vals.push((double) c - '0');
+                values.push(Double.parseDouble(token));
             }
         }
-        return vals.pop();
+        return values.pop();
     }
 }

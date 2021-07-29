@@ -1,44 +1,11 @@
-import java.util.Iterator;
+/**
+ * @author yongjie.zhuang
+ */
+public interface Bag<T> extends Iterable<T> {
 
-public class Bag<T> implements Iterable<T> {
+    void add(T t);
 
-    private Node<T> head = null;
-    private int size = 0;
+    boolean isEmpty();
 
-    public void add(T t) {
-        Node<T> n = new Node<>(t);
-        if (head == null) {
-            head = n;
-        } else {
-            n.next = head;
-            head = n;
-        }
-        size++;
-    }
-
-    public int size() {
-        return this.size;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new BagIterator();
-    }
-
-    private class BagIterator implements Iterator<T> {
-
-        private Node<T> root = head;
-
-        @Override
-        public boolean hasNext() {
-            return root != null;
-        }
-
-        @Override
-        public T next() {
-            T t = root.val;
-            root = root.next;
-            return t;
-        }
-    }
+    int size();
 }
