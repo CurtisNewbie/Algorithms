@@ -1,19 +1,9 @@
 import java.util.*;
 
-public class SequentialSearchST<K extends Comparable<K>, V> {
-    private Node<K, V> root;
+public class SequentialSearchST<K extends Comparable<K>, V> implements SymbolTable<K, V> {
 
-    public static void main(String[] args) {
-        SequentialSearchST<Character, Integer> ssst = new SequentialSearchST<>();
-        Object[][] data = new Object[][] { { 'S', 0 }, { 'E', 1 }, { 'A', 2 }, { 'R', 3 }, { 'C', 4 } };
-        for (Object[] r : data) {
-            ssst.put((Character) r[0], (Integer) r[1]);
-            System.out.println(ssst.show());
-        }
-        System.out.println("Delete 'S'");
-        ssst.delete('S');
-        System.out.println(ssst.show());
-    }
+    private Node<K, V> root;
+    private int size = 0;
 
     public V get(K k) {
         Node<K, V> curr = root;
@@ -37,9 +27,11 @@ public class SequentialSearchST<K extends Comparable<K>, V> {
         curr = new Node<K, V>(k, v);
         curr.setNext(root);
         root = curr;
+        size++;
     }
 
-    public String show() {
+    @Override
+    public String toString() {
         List<String> list = new ArrayList<>();
         Node<K, V> curr = root;
         while (curr != null) {
@@ -59,11 +51,17 @@ public class SequentialSearchST<K extends Comparable<K>, V> {
                 } else {
                     prev.setNext(curr.getNext());
                 }
+                size--;
                 return curr.getValue();
             }
             prev = curr;
             curr = curr.getNext();
         }
         return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 }

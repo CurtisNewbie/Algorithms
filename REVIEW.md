@@ -153,6 +153,26 @@ int binarySearch(int key, int arr[], int l, int h) {
 }
 ```
 
+**Finding correct position of key**
+
+`l` starts from 0, and it never decrease (look at the `l = m + 1`), so `l` will be where the item should go to if it's not found.
+
+```
+int binarySearch(int k, int arr[], int l, int h) {
+        while (l <= h) {
+            int m = l + (h - l) / 2;
+            if (arr[mid] == k)
+                return m;
+            else if (arr[mid] > k)
+                h = m - 1;
+            else
+                l = m + 1;
+
+        }
+        return l;
+    }
+```
+
 ### 1.6 Bag
 
 (p.74)
@@ -1161,4 +1181,787 @@ public class MaxPQ<K extends Comparable<K>> {
         sink(root);
         return max;
     }
+```
+
+## Chapter 3
+
+### 3.1 Sequential Search Symbol Table
+
+(p.236)
+
+Symbol Table can be considered as a key->value map kind of data structure. Sequential Search algorithm is an naive implementation using linked list, which takes O(n) for searching, insertion and deletion.
+
+When the entry that uses the same key is found, overwrites the previous value. New node is always added at Head.
+
+```
+public class SequentialSearchST<K extends Comparable<K>, V> {
+
+    private Node<K, V> root;
+
+    public V get(K k) {
+        Node<K, V> curr = root;
+        while (curr != null) {
+            if (curr.getKey().compareTo(k) == 0)
+                return curr.getValue();
+            curr = curr.getNext();
+        }
+        return null;
+    }
+
+    public void put(K k, V v) {
+        Node<K, V> curr = root;
+        while (curr != null) {
+            if (curr.getKey().compareTo(k) == 0) {
+                curr.setValue(v);
+                return;
+            }
+            curr = curr.getNext();
+        }
+        curr = new Node<K, V>(k, v);
+        curr.setNext(root);
+        root = curr;
+    }
+
+    public V delete(K k) {
+        Node<K, V> prev = null;
+        Node<K, V> curr = root;
+        while (curr != null) {
+            if (curr.getKey().compareTo(k) == 0) {
+                if (prev == null) {
+                    root = curr.getNext();
+                } else {
+                    prev.setNext(curr.getNext());
+                }
+                return curr.getValue();
+            }
+            prev = curr;
+            curr = curr.getNext();
+        }
+        return null;
+    }
+}
+```
+
+### 3.2 Binary Search Symbol Table
+
+(p.239)
+
+This implementation uses two array to stores the keys and values, the value of `keys[i]` will be `values[i]`. The `keys[]` array is ordered for binary search to work, it uses binary search algorithm to find value by key, as well as to find correct position for the inserted elements. When we insert an element, we find where it should go (say `pos`), and we move all items after `pos` (including `pos`) to right 1 step. For deletion, we move all items after pos to left 1 step, the `pos` element is overwritten.
+
+```
+public class BinarySearchST<K extends Comparable<K>, V> {
+
+    private K[] keys;
+    private V[] values;
+    private int size = 0;
+
+    ...
+
+    public V get(K k) {
+        if (k == null)
+            return null;
+        if (size == 0)
+            return null;
+
+        int pos = binarySearch(k, 0, size - 1);
+        if (pos < size && keys[pos].compareTo(k) == 0)
+            return values[pos];
+        else
+            return null;
+    }
+
+    /** Find the correct position */
+    private int binarySearch(K k, int l, int h) {
+        while (l <= h) {
+            int m = l + (h - l) / 2;
+            int cmp = keys[m].compareTo(k);
+            if (cmp == 0)
+                return m;
+            else if (cmp > 0)
+                h = m - 1;
+            else
+                l = m + 1;
+        }
+        return l;
+    }
+
+    public void put(K k, V v) {
+        if (size == 0) {
+            keys[0] = k;
+            values[0] = v;
+            size++;
+            return;
+        }
+
+        int pos = binarySearch(k, 0, size - 1);
+        if (pos < size && keys[pos].compareTo(k) == 0) {
+            values[pos] = v;
+            return;
+        }
+        if (size + 1 < keys.length)
+            expand();
+        for (int i = size; i > pos; i--) {
+            keys[i] = keys[i - 1];
+            values[i] = values[i - 1];
+        }
+        keys[pos] = k;
+        values[pos] = v;
+        size++;
+    }
+
+    public V delete(K k) {
+        if (size == 0)
+            return null;
+        int pos = binarySearch(k, 0, size - 1);
+
+        V v = null;
+        if (pos < size && keys[pos].compareTo(k) == 0) {
+            v = values[pos];
+
+            for (int i = pos; i < size; i++) {
+                keys[i] = keys[i + 1];
+                values[i] = values[i + 1];
+            }
+
+            values[size] = null;
+            keys[size] = null;
+            size--;
+        }
+        return v;
+    }
+}
+```
+
+### 3.3 Binary Search Tree
+
+(p.250)
+
+In Binary Search Tree, every nodes in the left sub-tree are less than current node, and every nodes in the right sub-stree are greater than current node. An ordinal BST is not balanced, so, everything is much simpler.
+
+For insertion, we just traverse the tree, find the correct position (if the key is less than current node, go to left sub-tree, else go to the right sub-tree, the key is only comparing with the root of a sub-tree).
+
+Deletion will be a bit more complicated, when we delete a node `K`, which is not a root. We delete it by connecting the parent of `K` and the 'new' sub-tree rooted at a child of `K`.
+
+For example (see examples below), we have found `K` and we want to delete it. We know that we will need to somehow make `C` and `D` becomes a new sub-tree, and connects this sub-tree to `B` without violating the rule of BST. If both left child and right child of `K` are null, then we just return null. If the right child is null, we return left child, vice versa.
+
+Recall that in BST, all right child nodes are greater than current node, so we know that `D` and any nodes under `D` is greater than `K` as well as the left sub-tree of `K` (sub-tree rooted at `C`). Since the left sub-tree of `K` is always less than the right sub-tree of `K`, we just leave left sub-tree there. Then, We simply move the left-most (min) of `D` which is `H`, and make repalce `K` with `H`.
+
+I.e., **_To delete K, replace K with the left-most node under K.right_**
+
+```
+Before:
+
+B:4
+|   \
+A:3   K:8
+     |   \
+    C:7  D:11
+     |    |  \
+    E:6  F:10  G:12
+          |
+         H:9
+
+// rightMin = H
+// rightMin.right = D
+// B.right = rightMin
+
+After:
+
+B:4
+|   \
+A:3  H:9
+     |   \
+    C:7  D:11
+     |    |  \
+    E:6  F:10  G:12
+
+```
+
+**Implementation**
+
+```
+public class BinarySearchTree<K extends Comparable<K>, V> {
+
+    private Node<K, V> root = null;
+    private int size = 0;
+
+    // ...
+
+    private Node<K, V> deleteNode(Node<K, V> startedAt, K k) {
+        if (startedAt == null)
+            return null;
+        Node<K, V> curr = startedAt;
+
+        int cmp = curr.getKey().compareTo(k);
+        if (cmp < 0) {
+            curr.setRight(deleteNode(curr.getRight(), k));
+        } else if (cmp > 0) {
+            curr.setLeft(deleteNode(curr.getLeft(), k));
+        } else {
+            // found, delete it by returning another node
+            // as the new root of sub-tree
+            size--;
+            if (curr.getRight() == null)
+                return curr.getLeft();
+            else if (curr.getLeft() == null)
+                return curr.getRight();
+
+            // min node under right sub-tree
+            // replace current node with this rightMin
+            Node<K, V> rightMin = leftMostNode(curr.getRight());
+            rightMin.setRight(deleteLeftMost(curr.getRight()));
+            rightMin.setLeft(curr.getLeft());
+            return rightMin;
+        }
+        return curr;
+    }
+
+    private Node<K, V> deleteLeftMost(Node<K, V> node) {
+        // curr node is min node, delete curr node
+        if (node.getLeft() == null) {
+            size--;
+            return node.getRight();
+        } else {
+            node.setLeft(deleteLeftMost(node.getLeft()));
+            return node;
+        }
+    }
+
+    public Node<K, V> leftMostNode(Node<K, V> node) {
+        Node<K, V> curr = node;
+        while (curr.getLeft() != null) {
+            curr = curr.getLeft();
+        }
+        return curr;
+    }
+
+    public Node<K, V> getNode(K k) {
+        Node<K, V> curr = root;
+        int res;
+        while (curr != null
+                && (res = curr.getKey().compareTo(k)) != 0) {
+            if (res < 0) {
+                curr = curr.getRight();
+            } else {
+                curr = curr.getLeft();
+            }
+        }
+        return curr;
+    }
+
+    public void put(K k, V v) {
+        if (root == null) {
+            root = new Node<>(k, v);
+        } else {
+            Node<K, V> curr = root;
+            while (true) {
+                int cmp = curr.getKey().compareTo(k);
+                if (cmp == 0) { // replace
+                    curr.setValue(v);
+                    return;
+                } else if (cmp < 0) {
+                    if (curr.getRight() != null) {
+                        curr = curr.getRight();
+                    } else {
+                        curr.setRight(new Node<K, V>(k, v));
+                        break;
+                    }
+                } else {
+                    if (curr.getLeft() != null) {
+                        curr = curr.getLeft();
+                    } else {
+                        curr.setLeft(new Node<K, V>(k, v));
+                        break;
+                    }
+                }
+            }
+        }
+        size++;
+    }
+}
+```
+
+### 3.4 2-3 Tree
+
+(p.269)
+
+A red black tree is a 2-3 tree, wherein a node can be 2-node (one key and two child nodes) or a 3-node (two keys and three child nodes). A 3-node has three child nodes, or say three paths linking to three nodes, the left child node must be less than the middle one, and the right child node must be greater than the middle one, so the middle one is in between them.
+
+In general, when we insert a new node in to a 2-3 tree, we try to find it's correct position, if this position is a 2-node, inserting the node in it will make it a 3-node, which is just fine, because the height of the tree is not changed, the tree is still balanced, however, if it's a 3-node, we can't make it a 4-node, we need to split this node, and prompt the middle node among these four nodes to the upper level to become a parent node. If the parent is also a 3-node, we still prompt the middle one to the parent, making the parent a 4-node, then we just split it, and continue this process until there is no 4-node.
+
+E.g,
+
+```
+To insert `S`:
+
+   (A E)
+ /   |   \
+
+After insertion:
+
+  (A E S)
+ /   |   \
+
+Split them/balance them:
+
+   (E)
+    |
+  (A S)
+ /  |  \
+```
+
+### 3.5 Red-Black Tree
+
+(p.275)
+
+A red-black tree is a binary search tree as well as a 2-3 tree. A red path between two nodes connect two 2-node making them a 3-node. A black path is just the normal path.
+
+**Definition of a Red-Black Tree:**
+
+1. Red path is always on the left
+2. A node cannot connect to two red path at the same time
+3. A tree is perfectly balanced in terms of black paths (i.e., the height), we treat red path as those that connect two 2-nodes, rather than those that we use for traversal. This is why the red paths are sometimes drew as a flat line.
+
+For convenience, in implementation, we consider a path from `A` to `B` as a red path by looking at the `isRed` variable in `B`. I.e., if `B.isRed == true`, the path `A->B` is red, else it's black. So, the root is always black. Further, the newly inserted node is always at the bottom (just like Binary Search Tree), and this node is always red (`isRed = true`), in other words, the path that points to this newly inserted node is always red (recall how 2-3 tree insert nodes). After the insertion, we balance the parent node of this newly inserted node.
+
+#### 3.5.1 Rotation
+
+When we insert or remove a node from the tree, we need to re-balance the tree. For red-black tree, we use a technique called `Rotation`. The insertion without balancing is almost the same as the Binary Search Tree.
+
+**_Left Rotation:_**
+
+Left rotation starts with setting `T.right` to `R.left`, then it sets `R.left` to `T`. After rotation, `T` will be come the new root of this sub-tree, and `R` uses the color of `T` (i.e., if the path connects to `T` is red, then this path now connects to `R`, `R` will of course becomes red), and then `T` is set to be red (`isRed = true`).
+
+```
+Left Rotate T:
+
+    T
+   / \
+  L   R
+     / \
+    RL  RR
+
+Start Rotating:
+
+    T      R
+   / \      \
+  L   RL     RR
+
+After Rotation:
+
+    R
+   / \
+  T   RR
+ / \
+L   RL
+```
+
+**Implementation:**
+
+```
+Node<K, V> rotateLeft(Node<K, V> n) {
+    Node<K, V> r = n.getRight();
+    r.isRed = n.isRed;
+    n.isRed = true;
+    n.setRight(r.getLeft());
+    r.setLeft(n);
+    return r;
+}
+```
+
+**_Right Rotation:_**
+
+Right rotation is generally the same as the left rotation. It starts with
+
+```
+Right Rotate T:
+
+    T
+   / \
+  L   R
+ / \
+LL  LR
+
+Start Rotating:
+
+    T       L
+   / \     /
+  LR  R   LL
+
+After Rotation:
+
+  L
+ / \
+LL  T
+   / \
+  LR  R
+```
+
+**Implementation:**
+
+```
+Node<K, V> rotateRight(Node<K, V> n) {
+    Node<K, V> l = n.getLeft();
+    l.isRed = n.isRed;
+    n.isRed = true;
+    n.setLeft(l.getRight());
+    l.setRight(n);
+    return l;
+}
+```
+
+#### 3.5.2 When To Rotate
+
+For node `N`, three situations should be taken care of, the null node is considered as black node. We do rotation following below algorithm:
+
+1. If `N.right` node is red, and `N.left` node is not null, do **Left Rotation** on `N`, because red node are always the left node, in this case, we are rotating it from right to left.
+2. If `N.left` node is red and `N.left.left` node is red, do **Right Rotation** on `N`, because a node cannot connect to two red paths at the same time (e.g., `N.left` being node means, `N`->`N.left` is red, and `N.left.left` is red, means `N.left`->`N.left.left` is red as well).
+3. If both `N.left` and `N.right` are red, flip their colors. It makes the `N` becomes red, but the `N.left` and `N.right` becomes black.
+
+```
+Node<K, V> balance(Node<K, V> n) {
+    if (isRed(n.getRight()) && !isRed(n.getLeft()))
+        n = rotateLeft(n);
+
+    if (isRed(n.getLeft()) && isRed(n.getLeft().getLeft()))
+        n = rotateRight(n);
+
+    if (isRed(n.getLeft()) && isRed(n.getRight()))
+        flipColors(n);
+    return n;
+}
+```
+
+**Why it works like this?**
+
+There are a few cases to consider:
+
+The newly inserted node is always. If the parent (`N`) of the newly inserted node is black, and we inserted into the left child (`N.left`). Because this node is newly inserted, it doesn't have left child, so there is no need to balance.
+
+However, if we inserted this node to the right child (`N.right`), then we violated the rule of Red-Black tree, the red path can only point to the left child. In this case, we do a left rotation to fix it.
+
+```
+Imagine the \\ being the red path
+
+    T
+   / \\
+  L    R
+      / \
+     RL  RR
+
+Then it becomes:
+
+
+     R
+   // \
+  T    RR
+ / \
+L   RL
+
+```
+
+Apart from these two cases, if the parent node (`N`) is not a 2-node, it's a 3-node, which means that it's either red, or it's left child is red (if `N` is red, it means this node itself is a left node, otherwise, it's left node must be red, i.e., parent->N is red or N->left is red. Then we have three extra cases to handle.
+
+**1. N being red, insert into N.right**:
+
+If the new node is inserted as a right child (`N.right`), regardless of whether the parent node (`N`) is a 3-node or not, we will do a left rotation. If the `N` is red, after the left rotation, we do a right rotation to fix the "a node connecting to two red paths at the same time" rule as follows:
+
+Imagine the `\\` being the red path, R being the newly inserted node, remember that we are balancing the tree bottom up, not just the parent node `N`.
+
+```
+
+        P
+      //
+    N
+   / \\
+  L    R
+      / \
+     RL  RR
+
+Then it becomes this after the left rotation:
+
+        P
+      //
+     R
+   // \
+  N    RR
+ / \
+L   RL
+
+Then we do right rotation on P:
+
+       R
+     // \\
+    N     P
+  /  \     \
+ L   RL    RR
+
+Then we notice that both the left child and right child are red,
+we flip their colors:
+
+       R
+     /   \
+    N     P
+  /  \     \
+ L   RL    RR
+
+```
+
+**2. N being black, insert into N.right**:
+
+If the N is not red, which means its left is red.
+
+```
+
+     N
+   // \\
+  L     R
+       / \
+      RL  RR
+
+Then it becomes this after the left rotation:
+
+      R
+    // \
+   N    RR
+ // \
+L   RL
+
+Then we notice that the same case happens, and we do right rotation on R:
+
+       R
+     // \\
+    N     P
+  /  \     \
+ L   RL    RR
+
+Then we notice that both the left child and right child are red,
+we flip their colors:
+
+       R
+     /   \
+    N     P
+  /  \     \
+ L   RL    RR
+
+```
+
+**3. N being red, insert into N.left**:
+
+Imagine the `\\` being the red path, L being the newly inserted node, remember that we are balancing the tree bottom up, not just the parent node `N`.
+
+```
+        P
+      //
+     N
+   //
+  L
+
+Without any rotation, we can already see the familiar pattern,
+we do right rotation on P:
+
+      N
+    // \\
+   L     P
+
+Then we notice that both the left child and right child are red,
+we flip their colors:
+
+      N
+    /   \
+   L     P
+
+```
+
+Finally, it's impossible to have `N` as black 3-node, and then at the same time, insert a newly created nodes to it's left (`N.left`).
+
+#### 3.5.3 Implementation
+
+```
+public class RedBlackTree<K extends Comparable<K>, V> {
+
+    private Node<K, V> root = null;
+
+    // ...
+
+    public V get(K k) {
+        Node<K, V> n = find(k, root);
+        return n != null ? n.getValue() : null;
+    }
+
+    private Node<K, V> find(K k, Node<K, V> root) {
+        if (root == null)
+            return null;
+        int cmp = root.getKey().compareTo(k);
+        if (cmp == 0) {
+            return root;
+        }
+        if (cmp > 0)
+            return find(k, root.getLeft());
+        else
+            return find(k, root.getRight());
+    }
+
+    // ... implementation of rotation and balancing
+
+    public void put(K k, V v) {
+        root = put(root, k, v);
+        // root is always black
+        root.isRed = false;
+    }
+
+    private Node<K, V> put(Node<K, V> root, K k, V v) {
+        if (root == null) {
+            Node<K, V> node = new Node<>(k, v);
+            node.isRed = true;
+            return node;
+        }
+
+        int cmp = k.compareTo(root.getKey());
+        if (cmp < 0)
+            root.setLeft(put(root.getLeft(), k, v));
+        else if (cmp > 0)
+            root.setRight(put(root.getRight(), k, v));
+        else
+            root.setValue(v);
+
+        return balance(root);
+    }
+
+    void flipColors(Node<K, V> h) {
+        h.isRed = !h.isRed;
+        h.getLeft().isRed = !h.getLeft().isRed;
+        h.getRight().isRed = !h.getRight().isRed;
+    }
+}
+```
+
+### 3.6 Separate Chaining Hash Table
+
+(p.297)
+
+A Hash Table that internally stores a list of values. When collision occurs. put these entries into the list for the same hash.
+
+```
+public class SeparateChainingHashST<K extends Comparable<K>, V> {
+    private final int M;
+    private SequentialSearchST<K, V>[] st;
+    private int size = 0;
+
+    public SeparateChainingHashST(int size) {
+        this.M = size;
+        st = (SequentialSearchST<K, V>[]) new SequentialSearchST[M];
+        for (int i = 0; i < M; i++) {
+            st[i] = new SequentialSearchST<>();
+        }
+    }
+
+    public V get(K k) {
+        return (V) st[hash(k)].get(k);
+    }
+
+    public void put(K k, V v) {
+        SequentialSearchST<K, V> seqt = st[hash(k)];
+        int beforeSize = seqt.size();
+        seqt.put(k, v);
+        if (seqt.size() > beforeSize)
+            size++;
+    }
+
+    public V delete(K k) {
+        SequentialSearchST<K, V> seqt = st[hash(k)];
+        int beforeSize = seqt.size();
+        V v = seqt.delete(k);
+        if (seqt.size() < beforeSize)
+            size--;
+        return v;
+    }
+}
+```
+
+### 3.7 Linear Probing Hash Table
+
+(p.301)
+
+Hash table that doesn't use extra data structure for collision. When collision occurs, it simply moves down to next pocket. The deletion is what really different. For example, when both `hash(k1)` and `hash(k2)` goes to `keys[1]`, after `k1` being inserted and we want to insert `k2`, collision occurs, so we insert the value of `k2` to `keys[1+1]`.
+
+This is okay for insertion, however, when we want to delete `k1`, we know it's at `keys[1]` by hashing, but `k2` uses the same hash as well. Now, `keys[1]` is being deleted, so `keys[1] = null`, but at same time `keys[2]` uses the same hash and it's not null, we have to fix it by re-inserting the non-null values after `keys[1]`. Also because of it, we have to carefully take care of the usage rate of the hash table to avoid collision.
+
+```
+public class LinearProbingHashST<K extends Comparable<K>, V> {
+    private int size = 0;
+    private int M;
+    private K[] keys;
+    private V[] values;
+
+    public boolean contains(K k) {
+        int hashVal = hash(k);
+        for (int i = hashVal; keys[i] != null; i = (i + 1) % M) {
+            if (k.compareTo(keys[i]) == 0)
+                return true;
+        }
+        return false;
+    }
+
+    public void put(K k, V v) {
+        if (size >= M / 2) // a = 0.5 usage, i.e., 50%
+            resize();
+
+        int hashVal = hash(k);
+        int i;
+        for (i = hashVal; keys[i] != null; i = (i + 1) % M) {
+            // replace value
+            if (keys[i].compareTo(k) == 0) {
+                values[i] = v;
+                return;
+            }
+        }
+        // found keys[i] == NULL
+        keys[i] = k;
+        values[i] = v;
+        size++;
+    }
+
+    public V delete(K k) {
+        int hashVal = hash(k);
+        V v = null;
+        int i = hashVal;
+
+        // find item
+        while (k.compareTo(keys[i]) != 0) {
+            i = (i + 1) % M; // next
+        }
+
+        // delete item
+        keys[i] = null;
+        v = values[i];
+        values[i] = null;
+
+        // handle items behind it
+        i = (i + 1) % M;
+        while (keys[i] != null) {
+            // re-insert
+            K fk = keys[i];
+            V fv = values[i];
+            keys[i] = null;
+            values[i] = null;
+            --size;
+            put(fk, fv);
+            i = (i + 1) % M;
+        }
+        size--;
+        return v;
+    }
+
+    public V get(K k) {
+        int hashVal = hash(k);
+        for (int i = hashVal; keys[i] != null; i = (i + 1) % M) {
+            if (keys[i] == k) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+}
+
 ```

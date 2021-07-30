@@ -1,7 +1,9 @@
-public class SeparateChainingHashST<K extends Comparable<K>, V> {
-    private int n;
+import java.util.Arrays;
+
+public class SeparateChainingHashST<K extends Comparable<K>, V> implements SymbolTable<K, V> {
     private final int M;
     private SequentialSearchST<K, V>[] st;
+    private int size = 0;
 
     public SeparateChainingHashST() {
         this(997);
@@ -24,11 +26,33 @@ public class SeparateChainingHashST<K extends Comparable<K>, V> {
     }
 
     public void put(K k, V v) {
-        st[hash(k)].put(k, v);
+        SequentialSearchST<K, V> seqt = st[hash(k)];
+        int beforeSize = seqt.size();
+        seqt.put(k, v);
+        if (seqt.size() > beforeSize)
+            size++;
     }
 
     public V delete(K k) {
-        var ss = st[hash(k)];
-        return ss.delete(k);
+        SequentialSearchST<K, V> seqt = st[hash(k)];
+        int beforeSize = seqt.size();
+        V v = seqt.delete(k);
+        if (seqt.size() < beforeSize)
+            size--;
+        return v;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        return "SeparateChainingHashST{" +
+                "M=" + M +
+                ", st=" + Arrays.toString(st) +
+                ", size=" + size +
+                '}';
     }
 }

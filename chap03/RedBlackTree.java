@@ -1,29 +1,11 @@
 import java.util.*;
 
 /**
- * [Only Insert operation implemented]
  * <p>
- * Red Black Tree is an implementation of a 2-3 tree. A 2-3 tree can have 2-node
- * or 3-node, the self-balancing mechanism relies on the use of 2/3 node, and
- * the use of red/black implements this concept.
- * <p>
- * In general, when one is inserted into a correct position, if it's a 1-node,
- * inserting the node in it will make it a 2-node, which is balanced already.
- * <p>
- * However, if it's a 2-node, which means inserting the node in it will make it
- * a 3-node, and we need to balance it by moving the middle node up a level
- * until the tree is balanced. Thus, this is a bottom-up balancing approach.
- * <p>
- * This concept is hard to implement directly since there are various cases to
- * take care of. A red-black tree adopts the similar concept using a red/black
- * colour. Red path links two node making them a three node, and black path is
- * just a normal path.
- * <p>
- * - Red-paths are always paths on the left (paths to the left node).
- * <p>
- * - No one node can connect to two Red-paths simultaneously.
- * <p>
- * - Balck-paths are perfectly balanced.
+ * Red-black tree (2-3 tree)
+ * </p>
+ *
+ * @author yongjie.zhuang
  */
 public class RedBlackTree<K extends Comparable<K>, V> {
 
@@ -31,16 +13,36 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     public static void main(String[] args) {
         RedBlackTree<Character, Character> rbt = new RedBlackTree<>();
-        char[] arr = new char[] { 'S', 'E', 'A', 'R', 'C', 'H', 'X', 'M', 'P', 'L' };
+        char[] arr = new char[]{'S', 'E', 'A', 'R', 'C', 'H', 'X', 'M', 'P', 'L'};
         for (char c : arr)
             rbt.put(c, c);
         System.out.println(rbt.show());
+        System.out.println(rbt.get('A'));
+        System.out.println(rbt.get('G'));
+        System.out.println(rbt.get('H'));
+    }
+
+    public V get(K k) {
+        Node<K, V> n = find(k, root);
+        return n != null ? n.getValue() : null;
+    }
+
+    private Node<K, V> find(K k, Node<K, V> root) {
+        if (root == null)
+            return null;
+        int cmp = root.getKey().compareTo(k);
+        if (cmp == 0) {
+            return root;
+        }
+        if (cmp > 0)
+            return find(k, root.getLeft());
+        else
+            return find(k, root.getRight());
     }
 
     /**
-     * Rotate left, swap node {@code n} with its right child, and return its right
-     * child.
-     * 
+     * Rotate left, swap node {@code n} with its right child, and return its right child.
+     *
      * @param n
      * @return correct child node of {@code n}'s parent
      */
@@ -54,9 +56,8 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     /**
-     * Rotate right, swap node {@code n} with its left child, and return its left
-     * child.
-     * 
+     * Rotate right, swap node {@code n} with its left child, and return its left child.
+     *
      * @param n
      * @return correct child node of {@code n}'s parent
      */
@@ -71,7 +72,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     /**
      * Flip the colours of node {@code h} and its child nodes.
-     * 
+     *
      * @param h
      */
     void flipColors(Node<K, V> h) {
@@ -86,22 +87,22 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         root.isRed = false;
     }
 
-    private Node<K, V> put(Node<K, V> n, K k, V v) {
-        if (n == null) {
-            Node<K, V> nnode = new Node<>(k, v);
-            nnode.isRed = true;
-            return nnode;
+    private Node<K, V> put(Node<K, V> root, K k, V v) {
+        if (root == null) {
+            Node<K, V> node = new Node<>(k, v);
+            node.isRed = true;
+            return node;
         }
 
-        int res = k.compareTo(n.getKey());
-        if (res < 0)
-            n.setLeft(put(n.getLeft(), k, v));
-        else if (res > 0)
-            n.setRight(put(n.getRight(), k, v));
+        int cmp = k.compareTo(root.getKey());
+        if (cmp < 0)
+            root.setLeft(put(root.getLeft(), k, v));
+        else if (cmp > 0)
+            root.setRight(put(root.getRight(), k, v));
         else // replace value
-            n.setValue(v);
+            root.setValue(v);
 
-        return balance(n);
+        return balance(root);
     }
 
     private Node<K, V> balance(Node<K, V> n) {

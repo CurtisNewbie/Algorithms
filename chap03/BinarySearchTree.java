@@ -1,12 +1,12 @@
 import java.util.*;
 
-public class BST<K extends Comparable<K>, V> {
+public class BinarySearchTree<K extends Comparable<K>, V> implements SymbolTable<K, V> {
 
     private Node<K, V> root = null;
     private int size = 0;
 
     public static void main(String[] args) {
-        BST<String, String> bst = new BST<>();
+        BinarySearchTree<String, String> bst = new BinarySearchTree<>();
         bst.put("Curtis", "newbie");
         System.out.println(bst.show());
         bst.put("Banana", "mie");
@@ -69,10 +69,10 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public Node<K, V> min() {
-        return min(root);
+        return leftMostNode(root);
     }
 
-    public Node<K, V> min(Node<K, V> node) {
+    public Node<K, V> leftMostNode(Node<K, V> node) {
         Node<K, V> curr = node;
         while (curr.getLeft() != null) {
             curr = curr.getLeft();
@@ -93,9 +93,8 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     /**
-     * Delete the minimum node (left-most) in the sub-tree rooted at {@code node}
-     * and return a currect sub-node for the parent of {@code node} after
-     * modification.
+     * Delete the minimum node (left-most) in the sub-tree rooted at {@code node} and return the current root of this
+     * sub-tree after removal
      * <p>
      * For example:
      * <p>
@@ -103,31 +102,26 @@ public class BST<K extends Comparable<K>, V> {
      * <p>
      * {@code parent.setRight(delMin(parent.getRight()));}
      * <p>
-     * Deleting the minimum node in the sub-tree rooted at parent.getRight(). The
-     * method returns the correct sub-node of the parent of {@code node}, Since
-     * parent.getRight() is the right child node of parent, we just act as if
-     * nothing happens, and connect it back to its parent as the original right
-     * child node.
-     * <p>
-     * If parent.getRight() is actually the minimum node, the right childe node of
-     * parent.getRight() is returned instead, such that the tree is still correct
-     * and the min node is removed.
-     * 
-     * @param node
-     * @return
+     * Deleting the minimum node in the sub-tree rooted at parent.getRight(). The method returns new root of the
+     * sub-tree.
+     * </p>
+     *
+     * @return new root of sub-tree after deletion
      */
-    private Node<K, V> delMin(Node<K, V> node) {
-        if (node.getLeft() == null) { // current node is the minimum node
+    private Node<K, V> deleteLeftMost(Node<K, V> node) {
+        // current node is the min node, delete current node
+        if (node.getLeft() == null) {
             size--;
-            return node.getRight(); // node.getRight() will be connected to the left node of its parent
+            // node.getRight() will be connected to the left node of its parent
+            return node.getRight();
         } else {
-            node.setLeft(delMin(node.getLeft()));
+            node.setLeft(deleteLeftMost(node.getLeft()));
             return node;
         }
     }
 
     public void delMin() {
-        root = delMin(root);
+        root = deleteLeftMost(root);
     }
 
     public V delete(K k) {
@@ -136,68 +130,36 @@ public class BST<K extends Comparable<K>, V> {
 
     /**
      * Delete a node
-     * <p>
-     * E.g.,
-     * <p>
-     * D- to be deleted
-     * <p>
-     * R- right of D
-     * <p>
-     * RL- left of R
-     * <p>
-     * L- left of D
-     * <p>
-     * M- Min node in tree rooted at R
-     * <p>
-     * MR- Right node of Min
-     * <p>
-     * ____D____-____M____
-     * <p>
-     * __/___\__-__/___\__
-     * <p>
-     * _L_____R_-_L_____R_
-     * <p>
-     * ______/__-______/__
-     * <p>
-     * _____RL__-_____RL__
-     * <p>
-     * ____/____-____/____
-     * <p>
-     * ___M_____-___MR____
-     * <p>
-     * _____\___
-     * <p>
-     * ______MR_
-     * <p>
-     * 
-     * @param node
+     *
+     * @param startedAt
      * @param k
-     * @return
+     * @return root of sub-tree after deletion
      */
-    private Node<K, V> deleteNode(Node<K, V> node, K k) {
-        int res = 0;
-        if (node == null)
-            return node;
-        if ((res = node.getKey().compareTo(k)) < 0) {
-            node.setRight(deleteNode(node.getRight(), k));
-        } else if (res > 0) {
-            node.setLeft(deleteNode(node.getLeft(), k));
+    private Node<K, V> deleteNode(Node<K, V> startedAt, K k) {
+        if (startedAt == null)
+            return null;
+        Node<K, V> curr = startedAt;
+        int cmp = curr.getKey().compareTo(k);
+        if (cmp < 0) {
+            curr.setRight(deleteNode(curr.getRight(), k));
+        } else if (cmp > 0) {
+            curr.setLeft(deleteNode(curr.getLeft(), k));
         } else {
+            // found, delete it by returning another node as the new root of sub-tree
             size--;
-            if (node.getRight() == null)
-                return node.getLeft();
-            else if (node.getLeft() == null)
-                return node.getRight();
+            if (curr.getRight() == null)
+                return curr.getLeft();
+            else if (curr.getLeft() == null)
+                return curr.getRight();
 
-            Node<K, V> rightMin = node;
-            rightMin = min(node.getRight()); // min node in right sub-tree
-            // delMin() returns itself if node.getRight() isn't the min node
-            // and it reconnects parent of min to the right of min
-            rightMin.setRight(delMin(node.getRight()));
-            rightMin.setLeft(node.getLeft());
-            return rightMin; // min node in the right subtree has now replaced the previous node
+            // min node under right sub-tree
+            // replace current node with this rightMin
+            Node<K, V> rightMin = leftMostNode(curr.getRight());
+            rightMin.setRight(deleteLeftMost(curr.getRight()));
+            rightMin.setLeft(curr.getLeft());
+            return rightMin;
         }
-        return node;
+        return curr;
     }
 
     public int size() {
@@ -231,13 +193,12 @@ public class BST<K extends Comparable<K>, V> {
             root = new Node<>(k, v);
         } else {
             Node<K, V> curr = root;
-            int res;
             while (true) {
-                res = curr.getKey().compareTo(k);
-                if (res == 0) { // replace
+                int cmp = curr.getKey().compareTo(k);
+                if (cmp == 0) { // replace
                     curr.setValue(v);
                     return;
-                } else if (res < 0) {
+                } else if (cmp < 0) {
                     if (curr.getRight() != null) {
                         curr = curr.getRight();
                     } else {
@@ -269,6 +230,11 @@ public class BST<K extends Comparable<K>, V> {
             list.add(Arrays.asList(node.getKey(), node.getValue()));
             dfs(list, node.getRight());
         }
+    }
+
+    @Override
+    public String toString() {
+        return show();
     }
 
 }

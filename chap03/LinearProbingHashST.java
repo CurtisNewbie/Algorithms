@@ -1,13 +1,11 @@
 /**
- * Different from SeparateChainingHashST, wherein, each [i] in M is a
- * Linked-List alike structure. LinearProbingHashST doesn't create a separate
- * structure for each [i].
+ * Different from SeparateChainingHashST, wherein, each [i] in M is a Linked-List alike structure. LinearProbingHashST
+ * doesn't create a separate structure for each [i].
  * <p>
- * When collision occurs, it compares k with the key in [i], if key differs, it
- * moves down to [i+1], repeats until it finds one that matches its key or that
- * is empty.
+ * When collision occurs, it compares k with the key in [i], if key differs, it moves down to [i+1], repeats until it
+ * finds one that matches its key or that is empty.
  */
-public class LinearProbingHashST<K extends Comparable<K>, V> {
+public class LinearProbingHashST<K extends Comparable<K>, V> implements SymbolTable<K, V> {
     private int size = 0;
     private int M;
     private K[] keys;
@@ -20,9 +18,11 @@ public class LinearProbingHashST<K extends Comparable<K>, V> {
         System.out.println("Has 1? " + lpst.contains(1));
         System.out.println("Get 1: " + lpst.get(1));
         lpst.put(1, "Lemon");
+        System.out.println(lpst.toString());
         System.out.println("Replace 1 with Lemon: " + lpst.contains(1));
         lpst.delete(1);
         System.out.println("Delete 1: " + !lpst.contains(1));
+        System.out.println(lpst.toString());
         System.out.println("Get 1: " + lpst.get(1));
     }
 
@@ -134,5 +134,17 @@ public class LinearProbingHashST<K extends Comparable<K>, V> {
 
     public K[] keys() {
         return keys;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < M ; i++) {
+            sb.append("{ ").append(keys[i]).append(" : ").append(values[i]).append(" }");
+            if (i < M - 1)
+                sb.append(",");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
