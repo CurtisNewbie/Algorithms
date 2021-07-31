@@ -11,7 +11,7 @@ public class KosarajuSCC {
      * <p>
      * 2. Get topological order (reverse post-order)
      * <p>
-     * 3. Traverse the RPO order using standard DFS.
+     * 3. Traverse the reverse post-order using standard DFS.
      * <p>
      * SCC are elements found in a single dfs() call (including its own recursion)
      */
@@ -19,24 +19,26 @@ public class KosarajuSCC {
         marked = new boolean[g.vertices()];
         scc = new ArrayList<>();
         sccIds = new int[g.vertices()];
-        Iterable<Integer> reversePostOrder = new DepthFirstOrder(g.reverse()).reversePostOrder();
+        Iterable<Integer> reversePostOrder = new DepthFirstOrder(g.reverse())
+                .reversePostOrder();
         for (int v : reversePostOrder) {
             if (!marked[v]) {
                 List<Integer> l = new ArrayList<Integer>();
-                dfs(g, v, l, ++count);
+                ++count;
+                dfs(g, v, l);
                 scc.add(l);
             }
         }
 
     }
 
-    private void dfs(Digraph g, int v, List<Integer> scc, int sccId) {
+    private void dfs(Digraph g, int v, List<Integer> scc) {
         marked[v] = true;
         scc.add(v);
         sccIds[v] = count;
         for (int w : g.adjacent(v)) {
             if (!marked[w])
-                dfs(g, w, scc, sccId);
+                dfs(g, w, scc);
         }
     }
 

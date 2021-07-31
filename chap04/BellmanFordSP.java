@@ -138,7 +138,7 @@ public class BellmanFordSP {
         for (int v = 0; v < V; v++)
             if (edgeTo[v] != null)
                 spt.addEdge(edgeTo[v]);
-        return new DirectedCycle(spt).hasCycle();
+        return new TracedCycle(spt).hasCycle();
     }
 
     public boolean hasNegativeCycle() {

@@ -1,25 +1,25 @@
 import java.util.*;
 
-public class DirectedCycle {
+public class TracedCycle {
     private int[] parentOf;
     private boolean[] marked;
     private boolean[] onStack;
     private Stack<Integer> cycle = null;
 
-    private DirectedCycle(int vertices) {
+    private TracedCycle(int vertices) {
         parentOf = new int[vertices];
         marked = new boolean[vertices];
         onStack = new boolean[vertices];
     }
 
-    public DirectedCycle(Digraph g) {
+    public TracedCycle(Digraph g) {
         this(g.vertices());
         for (int v = 0; v < g.vertices(); v++)
             if (!marked[v])
                 dfs(g, v);
     }
 
-    public DirectedCycle(EdgeWeightedDigraph g) {
+    public TracedCycle(EdgeWeightedDigraph g) {
         this(g.vertices());
         for (int v = 0; v < g.vertices(); v++)
             if (!marked[v])
@@ -35,7 +35,8 @@ public class DirectedCycle {
             else if (!marked[w]) {
                 parentOf[w] = v;
                 dfs(g, w);
-            } else if (onStack[w]) { // cycle detected
+            } else if (onStack[w]) {
+                // record the cycle
                 cycle = new Stack<>();
                 for (int x = v; x != w; x = parentOf[x]) {
                     cycle.push(x);
@@ -77,12 +78,13 @@ public class DirectedCycle {
     }
 
     public static void main(String[] args) {
-        String fname = "../demodata/dgCycle.txt";
+        String fname = "/home/zhuangyongj/git/Algorithms/demodata/dgCycle.txt";
         Digraph g = new Digraph(fname);
         System.out.println("Graph: " + fname);
         System.out.println(g.toString());
-        DirectedCycle cycle = new DirectedCycle(g);
+        TracedCycle cycle = new TracedCycle(g);
         System.out.printf("Has Cycle: %b\n", cycle.hasCycle());
         System.out.printf("Cycle: %s\n", cycle.cycle().toString());
     }
+
 }

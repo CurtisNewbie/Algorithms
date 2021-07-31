@@ -3,12 +3,12 @@ import java.util.*;
 // for any pair of vertices (v and w), is there a path between them
 public class TransitiveClosure {
     // accessible vertices for each vertex
-    private DirectedDFS[] vertices;
+    private DFS[] vertices;
 
     public TransitiveClosure(Digraph g) {
-        vertices = new DirectedDFS[g.vertices()];
+        vertices = new DFS[g.vertices()];
         for (int v = 0; v < g.vertices(); v++) {
-            vertices[v] = new DirectedDFS(g, v);
+            vertices[v] = new DFS(g, v);
         }
     }
 

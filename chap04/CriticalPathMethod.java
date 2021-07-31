@@ -4,7 +4,7 @@ public class CriticalPathMethod {
 
     private final int N;
     private final EdgeWeightedDigraph g;
-    private final AcyclicLP acyclicLP;
+    private final AcyclicLongestPath acyclicLP;
     private final int start;
     private final int end;
 
@@ -33,7 +33,7 @@ public class CriticalPathMethod {
                 g.addEdge(new Edge(w, nextTask, 0.0));
             }
         }
-        acyclicLP = new AcyclicLP(g, start);
+        acyclicLP = new AcyclicLongestPath(g, start);
     }
 
     public List<Double> startingTimes() {

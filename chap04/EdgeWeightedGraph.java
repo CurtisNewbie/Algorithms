@@ -13,8 +13,8 @@ public class EdgeWeightedGraph {
         try (Scanner sc = new Scanner(new FileInputStream(Paths.get(fname).toFile()));) {
             this.V = sc.nextInt();
             this.E = 0;
-            adjacencyList = (List<Edge>[]) new ArrayList[vertices()];
-            initAdjList(vertices());
+            adjacencyList = emptyAdjacencyList(V);
+            emptyAdjacencyList(vertices());
             int edges = sc.nextInt();
             for (int i = 0; i < edges; i++)
                 addEdge(new Edge(sc.nextInt(), sc.nextInt(), sc.nextDouble()));
@@ -27,14 +27,16 @@ public class EdgeWeightedGraph {
     public EdgeWeightedGraph(int V) {
         this.V = V;
         this.E = 0;
-        adjacencyList = (List<Edge>[]) new ArrayList[vertices()];
-        initAdjList(vertices());
+        adjacencyList = emptyAdjacencyList(V);
+        emptyAdjacencyList(vertices());
     }
 
-    private void initAdjList(int v) {
-        for (int i = 0; i < vertices(); i++) {
-            adjacencyList[i] = new ArrayList<>();
+    private List<Edge>[] emptyAdjacencyList(int v) {
+        List<Edge>[] l = (List<Edge>[]) new ArrayList[vertices()];
+        for (int i = 0; i < v; i++) {
+            l[i] = new ArrayList<>();
         }
+        return l;
     }
 
     public Iterable<Edge> adjacent(int v) {
@@ -72,7 +74,7 @@ public class EdgeWeightedGraph {
             sb.append(" " + l.toString() + "\n");
         }
         sb.append("]");
-        return String.format("Weghted Graph: %d V, %d E\n%s", V, E, sb.toString());
+        return String.format("Weighted Graph: %d V, %d E\n%s", V, E, sb.toString());
     }
 
     public static void main(String[] args) {

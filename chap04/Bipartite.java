@@ -21,7 +21,7 @@ public class Bipartite {
         colours[v] = c;
         for (int w : g.adjacent(v)) {
             if (colours[w] == UNCOLOURED) {
-                dfs(g, w, -c);
+                dfs(g, w, c == RED ? BLACK : RED);
             } else if (colours[w] == colours[v]) {
                 isBipartite = false;
                 return;
@@ -34,15 +34,15 @@ public class Bipartite {
     }
 
     public static void main(String[] args) {
-        String test = "../demodata/bipartite.txt";
+        String test = "/home/zhuangyongj/git/Algorithms/demodata/bipartite.txt";
         System.out.printf("Graph: %s\n", test);
-        Graph g1 = new Graph(Paths.get(test));
+        Graph g1 = new UndirectedGraph(Paths.get(test));
         System.out.printf("Graph: %s", g1.toString());
         System.out.printf("Is Bipartite: %b\n", new Bipartite(g1).isBipartite());
 
-        test = "../demodata/notBipartite.txt";
-        System.out.printf("\nGraph: $s\n", test);
-        Graph g2 = new Graph(Paths.get(test));
+        test = "/home/zhuangyongj/git/Algorithms/demodata/notBipartite.txt";
+        System.out.printf("\nGraph: %s\n", test);
+        Graph g2 = new UndirectedGraph(Paths.get(test));
         System.out.printf("Graph: %s", g2.toString());
         System.out.printf("Is Bipartite: %b\n", new Bipartite(g2).isBipartite());
     }

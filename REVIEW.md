@@ -23,9 +23,7 @@ Iterative implementation:
 ```
 int gcd(int a, int b) {
     while (b != 0) {
-        int t = b;
-        b = a % b;
-        a = t;
+        int t = b; b = a % b; a = t;
     }
     return a;
 }
@@ -196,26 +194,8 @@ public class LinkedBag<T> implements Bag<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
     public Iterator<T> iterator() {
         return new LinkedBagIterator(head);
-    }
-
-    @Override
-    public void forEach(Consumer<? super T> action) {
-        Iterator<T> iterator = iterator();
-        while (iterator.hasNext()) {
-            action.accept(iterator.next());
-        }
     }
 
     private static class LinkedBagIterator<T> implements Iterator<T> {
@@ -257,34 +237,12 @@ public class ArrayBag<T> implements Bag<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return size() == 0;
-    }
-
-    @Override
-    public int size() {
-        return ptr;
-    }
-
-    @Override
     public Iterator<T> iterator() {
         return new ArrayBagIterator(Arrays.copyOfRange(array, 0, ptr));
     }
 
-    @Override
-    public void forEach(Consumer<? super T> action) {
-        Iterator<T> iterator = iterator();
-        while (iterator.hasNext()) {
-            action.accept(iterator.next());
-        }
-    }
-
     private void resize() {
         array = Arrays.copyOf(array, array.length << 2);
-    }
-
-    private boolean isFull() {
-        return ptr == array.length - 1;
     }
 
     private static class ArrayBagIterator<T> implements Iterator<T> {
@@ -355,28 +313,6 @@ public class LinkedQueue<T> implements Queue<T> {
         return t;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return size() == 0;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new LinkedQueueIterator<>(head);
-    }
-
-    @Override
-    public void forEach(Consumer<? super T> action) {
-        Iterator<T> iterator = iterator();
-        while (iterator.hasNext())
-            action.accept(iterator.next());
-    }
-
     private static class LinkedQueueIterator<T> implements Iterator<T> {
 
         private Node<T> head;
@@ -411,19 +347,6 @@ public class LinkedStack<T> implements Stack<T> {
 
     private Node<T> head = null;
     private int size = 0;
-
-    public LinkedStack() {
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return head == null;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
 
     @Override
     public void push(T t) {
@@ -489,32 +412,6 @@ public class ArrayStack<T> implements Stack<T> {
 
     public ArrayStack(int capacity) {
         arr = (T[]) new Object[capacity];
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    private void resize(int newCapacity) {
-        T[] ra = (T[]) new Object[newCapacity];
-        for (int i = 0; i < size; i++) {
-            ra[i] = arr[i];
-        }
-        this.arr = ra;
-    }
-
-    private boolean isFull() {
-        return this.size == arr.length;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    public int capacity() {
-        return arr.length;
     }
 
     @Override
@@ -664,11 +561,6 @@ public class UnionQuickFind implements UnionFind {
     }
 
     @Override
-    public int count() {
-        return count;
-    }
-
-    @Override
     public boolean connected(int p, int q) {
         return find(p) == find(q);
     }
@@ -722,11 +614,6 @@ public class UnionQuickUnion implements UnionFind {
     }
 
     @Override
-    public int count() {
-        return count;
-    }
-
-    @Override
     public boolean connected(int p, int q) {
         return find(p) == find(q);
     }
@@ -760,13 +647,13 @@ public class UnionQuickUnion implements UnionFind {
 Weighted Quick-Union is just like Quick-Union algorithm, except that the root node's weight is recorded, and the sub-trees are connected to the root node that has less weight.
 
 ```
-public class WeightedQuickUnion implements UnionFind {
+public class WeightedQuickUnionC implements UnionFind {
 
     private int[] root;
     private int[] weight;
     private int count;
 
-    public WeightedQuickUnion(final int numOfElements) {
+    public WeightedQuickUnionC(final int numOfElements) {
         root = new int[numOfElements];
         weight = new int[numOfElements];
         for (int i = 0; i < numOfElements; i++) {
@@ -774,11 +661,6 @@ public class WeightedQuickUnion implements UnionFind {
             weight[i] = 1;
         }
         count = numOfElements;
-    }
-
-    @Override
-    public int count() {
-        return count;
     }
 
     @Override
@@ -1883,7 +1765,7 @@ public class SeparateChainingHashST<K extends Comparable<K>, V> {
 
 (p.301)
 
-Hash table that doesn't use extra data structure for collision. When collision occurs, it simply moves down to next pocket. The deletion is what really different. For example, when both `hash(k1)` and `hash(k2)` goes to `keys[1]`, after `k1` being inserted and we want to insert `k2`, collision occurs, so we insert the value of `k2` to `keys[1+1]`.
+Hash table that doesn't use extra data structure for collision. When collision occurs, it simply moves down to next bucket. The deletion is what really differs. For example, when both `hash(k1)` and `hash(k2)` goes to `keys[1]`, after `k1` being inserted and we want to insert `k2`, collision occurs, so we insert the value of `k2` to `keys[1+1]`.
 
 This is okay for insertion, however, when we want to delete `k1`, we know it's at `keys[1]` by hashing, but `k2` uses the same hash as well. Now, `keys[1]` is being deleted, so `keys[1] = null`, but at same time `keys[2]` uses the same hash and it's not null, we have to fix it by re-inserting the non-null values after `keys[1]`. Also because of it, we have to carefully take care of the usage rate of the hash table to avoid collision.
 
@@ -1964,4 +1846,555 @@ public class LinearProbingHashST<K extends Comparable<K>, V> {
     }
 }
 
+```
+
+## Chapter 4
+
+### 4.1 Graph Terminology
+
+(p.331)
+
+- Directed Graph 有向图
+- Undirected Graph 无向图.
+- Cycle 自环
+- Parallel Edge 平行边
+  - Egdes that connect to same pair of nodes
+- Adjacent Vertices 相邻顶点
+  - Vertices that are connected by an edge
+- Degree (of a vertex) 度数
+  - The number of edges connected to the vertex
+- Connected Graph 连通图
+  - Any vertex can find a path connected any other vertices
+- Tree
+  - A connected graph without cycle
+- Spanning Tree 生成树
+  - Spanning tree is a sub-graph that contains all the vertices of the graph.
+- Forest
+  - A set of disconnected trees
+- Sparse Tree 稀疏图
+- Dense Tree 稠密图
+
+### 4.1 Implementing Graph
+
+(p.335)
+
+There are three way to describe a graph:
+
+1. Adjacency Matrix
+
+   - A N \* N matrix, to represent if v and w is connected. For example, if `matrix[v][w] == true`, than v is connected to w, vice versa. But this implementation takes a lots of spaces, so it's usually not appropriate. Furthermore, if parallel edge is permitted, adjacency matrix can't be used.
+
+2. Edge Array
+
+   - Use an array to store all the edges (e.g., create an Edge class to represent an edge), but this implementation makes it slow to find adjacent edges. For example, `List<Edge> edges ...`.
+
+3. Adjacency List
+
+- Adjacency is similar to Adjacency Matrix, but the list only maintains the vertices that are adjacent to the current vertex. For example, say we implement Adjacency List like `List<List<Vertex>> adjacentVertices`, and for vertex `v`, if it's degree is 3, than we have `adjacentVertices.get(v).size() == 3`.
+
+**Implementation:**
+
+```
+public class Graph {
+    /** vertices count */
+    private int V;
+    /** edges count */
+    private int E = 0;
+    private List<Integer>[] adjacencyList = null;
+
+    public Graph(int v) {
+        this.V = v;
+        adjacencyList = emptyAdjacencyList(V);
+    }
+
+    /**
+     * Add Edge between v-w. O(1)
+     */
+    public void addEdge(int v, int w) {
+        adjacencyList[v].add(w);
+        adjacencyList[w].add(v);
+        E++;
+    }
+
+    /**
+     * Return neighbours (adjacent vertices)
+     */
+    public List<Integer> adjacent(int v) {
+        return adjacencyList[v];
+    }
+
+    /**
+     * Degree of a vertex
+     */
+    public int degree(int v) {
+        return adjacent(v).size();
+    }
+}
+```
+
+### 4.2 Depth First Search
+
+(p.338)
+
+The implementation below uses `boolean[] marked` to record whether we have seen a node. In this demo, it starts from `s` node, based on it, we can find if there is a path between `s` node to `w` node. If such a path exists, `isMarked(w)` should return true. I.e., DFS is often used to find if such a path exists between `v` and `w` in the given graph.
+
+```
+public class DFS {
+
+    private boolean[] marked;
+    private int count;
+
+    /**
+     * @param g Graph
+     * @param s Source (the node that DFS starts)
+     */
+    public DFS(Graph g, int s) {
+        marked = new boolean[g.vertices()];
+        count = 0;
+        dfs(g, s);
+    }
+
+    private void dfs(Graph g, int v) {
+        mark(v);
+        count++;
+        for (int w : g.adjacent(v)) {
+            if (!isMarked(w))
+                dfs(g, w);
+        }
+    }
+
+    private void mark(int v) {
+        marked[v] = true;
+    }
+
+    private boolean isMarked(int v) {
+        return marked[v];
+    }
+}
+```
+
+In some cases, we no only want to check if such a path exists, we want to retrieve this path. All we have to do is to have an extra ADT (e.g., a list or array) to records it as follows:
+
+```
+int[] parentOf;
+
+void dfs(Graph g, int v) {
+    marked[v] = true;
+    for (int w : g.adjacent(v)) {
+        if (!marked[w]) {
+            parentOf[w] = v; // v->w
+            dfs(g, w);
+        }
+    }
+}
+
+/** From v->source */
+Iterable<Integer> pathTo(int v) {
+    if (!hasPathTo(v))
+        return null;
+
+    Deque<Integer> deque = new LinkedList<>();
+    for (int x = v; x != source; x = parentOf[x]) {
+        deque.add(x);
+    }
+    deque.add(source);
+    return deque;
+}
+```
+
+### 4.3 Breath First Search
+
+(p.344)
+
+BFS is also used for finding the shortest path between two vertices.
+
+```
+void bfs(Graph g, int v) {
+    Queue<Integer> queue = new LinkedList<>();
+    queue.offer(v);
+    marked[v] = true;
+    while (!queue.isEmpty()) {
+        int x = queue.poll();
+        for (int w : g.adjacent(x)) {
+            if (!marked[w]) {
+                marked[w] = true;
+                parentOf[w] = x; // x->w
+                queue.offer(w);
+            }
+        }
+    }
+}
+```
+
+### 4.4 Connected Components
+
+连通分量
+
+(p.349)
+
+Connected components in graph, refers to those connected sub-graphs. In a connected graph, there is only one connected component. We use DFS to find out all the connected components in a graph, regardless of whether it's a connected graph. Implementation is quite straightforward, for each vertex, we do a DFS, during the DFS, we mark the vertex and add the vertex to a list for this component. I.e., each DFS (from start to end) is a component. If it's a connected graph, a DFS is enough to traverse all the nodes, and add them to a single list.
+
+```
+List<List<Integer>> components;
+
+ConnectedComponents(Graph g) {
+    marked = new boolean[g.vertices()];
+    components = new ArrayList<>();
+    for (int x = 0; x < g.vertices(); x++) {
+        if (!marked[x]) {
+            List<Integer> l = new ArrayList<>();
+            dfs(g, x, l);
+            components.add(l);
+        }
+    }
+}
+```
+
+### 4.5 Detect Cycle With DFS
+
+(p.353)
+
+**Implementation:**
+
+Notice that, **do not** use `marked[x]` to identify cycle, because graph may not be connected. Snippet in book works because it's connected graph.
+
+```
+Cycle(Graph g) {
+    marked = new boolean[g.vertices()];
+    onStack = new boolean[g.vertices()];
+    hasCycle = false;
+    for (int x = 0; x < g.vertices(); x++) {
+        if (!marked[x]) {
+            dfs(g, x);
+        }
+    }
+}
+
+void dfs(Graph g, int v) {
+    marked[v] = true;
+    onStack[v] = true;
+    for (int w : g.adjacent(v)) {
+        if (!marked[w]) {
+            dfs(g, w);
+        } else if (onStack[w]) {
+            hasCycle = true;
+        }
+    }
+    onStack[v] = false;
+}
+```
+
+**To trace the cycle, we create a Stack to record:**
+
+```
+void dfs(Digraph g, int v) {
+    marked[v] = true;
+    onStack[v] = true;
+    for (int w : g.adjacent(v)) {
+        if (hasCycle) // cycleStack != null
+            return;
+        else if (!marked[w]) {
+            parentOf[w] = v;
+            dfs(g, w);
+        } else if (onStack[w]) { // cycle detected
+            cycleStack = new Stack<>();
+            for (int x = v; x != w; x = parentOf[x]) {
+                cycleStack.push(x);
+            }
+            cycleStack.push(w);
+            cycleStack.push(v); }
+    }
+    onStack[v] = false;
+}
+```
+
+### 4.6 Detect Bipartite With DFS
+
+二分图
+
+(p.353)
+
+Bipartite is solved with DFS as follows. During a DFS, v->w, if w is colored, than w's color must be different than v's color.
+
+```
+E.g.,
+
+1) this is a Bipartite
+
+A->B->C->D
+
+Black Set          Red Set
+            |
+A  ---------|-------> B
+            |         |
+C <---------|---------
+|           |         |
+------------|-------> D
+
+1) this is not a Bipartite
+
+A->B->C->A
+
+Black Set          Red Set
+            |
+ -----------|-------> B
+A           |         |
+ <----------|---------C
+            |
+            |
+```
+
+Implementation:
+
+```
+Bipartite(Graph g) {
+    colours = new int[g.vertices()];
+    isBipartite = true;
+
+    // graph might not be connected
+    for (int i = 0; i < g.vertices() && isBipartite; i++) {
+        if (colours[i] == UNCOLOURED)
+            dfs(g, i, RED);
+    }
+}
+
+void dfs(Graph g, int v, int c) {
+    colours[v] = c;
+    for (int w : g.adjacent(v)) {
+        if (colours[w] == UNCOLOURED) {
+            dfs(g, w, c == RED ? BLACK : RED);
+        } else if (colours[w] == colours[v]) {
+            isBipartite = false;
+            return;
+        }
+    }
+}
+```
+
+### 4.7 Directed Graph
+
+(p.366)
+
+The only difference from the undirected graph is as follows:
+
+**In Undirected Graph:**
+
+```
+public void addEdge(int v, int w) {
+    adjacencyList[v].add(w);
+    adjacencyList[w].add(v);
+    E++;
+}
+```
+
+**In Directed Graph:**
+
+```
+public void addEdge(int v, int w) {
+    adjacencyList[v].add(w);
+    E++;
+}
+```
+
+### 4.8 Directed DFS and BFS
+
+(p.368)
+
+Same as Undirected DFS and BFS, implementation doesn't even need to change between undirected graph and directed graph.
+
+### 4.9 Directed Acylic Graph
+
+- 有向无环图
+
+(p.371)
+
+DAG is a directed graph without cycles. Dependency graph should be a DAG, if there is a cycle, the dependencies can't be solved. Cycles in directed graph can be detected using DFS. The idea and implementation is the same as the undirected graph. See 4.5.
+
+### 4.10 Pre-Order, In-Order, Post-Order Traversal
+
+- Pre-Order 前序
+- In-Order 中序
+- Post-Order 后序
+
+**For tree:**
+
+1. Pre-Order
+   - current node first
+   - then left node
+   - finally the right node
+2. In-Order
+   - left node first
+   - then current node
+   - finally the right node
+3. Post-Order
+   - left node first
+   - then right node
+   - finally the current node
+
+**For graph:**
+
+1. Pre-Order
+   - same order as the DFS (top -> down in terms of depth)
+2. Post-Order
+   - the order that the vertex finishes their visiting (e.g., 1->2->3 then, 3 is the first node that finishes it's visiting, then 2, and then 1)
+
+**Implementation:**
+
+```
+void dfs(Digraph g, int v) {
+    preOrder.offer(v);
+    marked[v] = true;
+    for (int w : g.adjacent(v)) {
+        if (!marked[w]) {
+            dfs(g, w);
+        }
+    }
+    postOrder.offer(v);
+}
+```
+
+### 4.11 Topological Ordering
+
+拓扑排序
+
+(p.375)
+
+Topological Ordering is the reverse post-order of DAG. It can be used for task scheduling, and it describes the task dependencies.
+
+```
+void dfs(Digraph g, int v) {
+    marked[v] = true;
+    for (int w : g.adjacent(v)) {
+        if (!marked[w]) {
+            dfs(g, w);
+        }
+    }
+    reversePostOrder.offerFirst(v);
+}
+```
+
+### 4.12 Strongly Connected Components
+
+强连通性
+
+(p.378)
+
+Connectivity:
+
+- If `v` and `w` is reachable to each other in a directed graph, then they are said to be strongly connected.
+- If in a directed graph, any two nodes are strongly connected, then this graph is strongly connected.
+
+In Strongly Connected Components (SCC), any two vertices are strongly connected. A DAG with N nodes has N SCCs. A strongly connected graph has only one SCC.
+
+### 4.13 Kosaraju Algorithm For Finding SCC
+
+(p.379)
+
+Algorithm:
+
+1. Reverse graph `G` to `'G`
+2. Traverse `'G` in reverse post-order: `rpo'G`
+3. Do standard DFS according to `rpo'G`, each complete DFS is a SCC.
+
+**Implementation:**
+
+```
+public KosarajuSCC(Digraph g) {
+    marked = new boolean[g.vertices()];
+    scc = new ArrayList<>();
+    sccIds = new int[g.vertices()];
+    Iterable<Integer> reversePostOrder = new DepthFirstOrder(g.reverse())
+            .reversePostOrder();
+
+    for (int v : reversePostOrder) {
+        if (!marked[v]) {
+            List<Integer> l = new ArrayList<Integer>();
+            ++count;
+            dfs(g, v, l);
+            scc.add(l);
+        }
+    }
+
+}
+
+private void dfs(Digraph g, int v, List<Integer> scc) {
+    marked[v] = true;
+    scc.add(v);
+    sccIds[v] = count;
+    for (int w : g.adjacent(v)) {
+        if (!marked[w])
+            dfs(g, w, scc);
+    }
+}
+
+```
+
+### 4.14 Weighted Graph
+
+(p.394)
+
+In weighted graph, edge is assigned a weight. To implement weighted graph, we continue to use the idea of adjacency list, however, instead of tracking the adjacent vertices, we store the adjacent edges of each vertex, and we create an object of each edge to model this.
+
+**A weighted edge:**
+
+```
+public class Edge implements Comparable<Edge> {
+    private final int v;
+    private final int w;
+    private final double weight;
+
+    public Edge(int v, int w, double weight) {
+        this.v = v;
+        this.w = w;
+        this.weight = weight;
+    }
+
+    // ...
+}
+```
+
+**Edge Weighted Graph Implementation:**
+
+Below is a undirected weighted graph. What is really different is that the adjacency list now records a list of adjacent edges for each vertex.
+
+```
+public class EdgeWeightedGraph {
+
+    protected int V;
+    protected int E;
+    protected List<Edge>[] adjacencyList;
+
+    public EdgeWeightedGraph(int V) {
+        this.V = V;
+        this.E = 0;
+        adjacencyList = emptyAdjacencyList(V);
+        emptyAdjacencyList(vertices());
+    }
+
+    public Iterable<Edge> adjacent(int v) {
+        return adjacencyList[v];
+    }
+
+    public Iterable<Integer> adjVertices(int v) {
+        List<Integer> neighbours = new ArrayList<>();
+        Iterable<Edge> el = adjacent(v);
+        el.forEach(e -> neighbours.add(e.w()));
+        return neighbours;
+    }
+
+    public void addEdge(Edge e) {
+        adjacencyList[e.v()].add(e);
+        adjacencyList[e.w()].add(e);
+        E++;
+    }
+}
+```
+
+The example above is a undirected weighted graph, if it's directed, we just change `addEdge()` as below:
+
+```
+public void addEdge(Edge e) {
+    adjacencyList[e.v()].add(e);
+    E++;
+}
 ```

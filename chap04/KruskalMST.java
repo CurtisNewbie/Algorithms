@@ -13,7 +13,7 @@ public class KruskalMST {
         // UnionFind to record vertices connected using an array root[] with weight[],
         // where root[i] is the parent of i, and weight[i] is the weight of subtree
         // rooted at i (for flattening the tree)
-        WeightedQuickUnion uf = new WeightedQuickUnion(g.vertices());
+        WeightedQuickUnionC uf = new WeightedQuickUnionC(g.vertices());
         while (!minpq.isEmpty() && mst.size() < g.vertices() - 1) {
             Edge minEdge = minpq.poll();
             if (uf.connected(minEdge.v(), minEdge.w()))

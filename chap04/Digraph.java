@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.*;
 import java.nio.file.*;
 
-public class Digraph {
+public class Digraph implements Graph {
     // this is directional, only w is added to v, where v->w
     private List<Integer>[] adjacencyList;
     private int V;
@@ -30,7 +30,7 @@ public class Digraph {
 
     /**
      * Create {@code adjacencyList}
-     * 
+     *
      * @param v number of vertices
      */
     @SuppressWarnings("unchecked")
@@ -45,9 +45,14 @@ public class Digraph {
         return adjacencyList[v];
     }
 
+    @Override
+    public int degree(int v) {
+        return adjacent(v).size();
+    }
+
     /**
      * Add edge v->w, directional
-     * 
+     *
      * @param v
      * @param w
      */

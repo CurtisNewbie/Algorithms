@@ -1,16 +1,15 @@
 import java.util.*;
 
-public class AcyclicLP {
+public class AcyclicLongestPath {
 
     /**
-     * Should be Double.NEGATIVE_INFINITY for all vertices except {@code source} by
-     * default
+     * Should be Double.NEGATIVE_INFINITY for all vertices except {@code source} by default
      */
     protected double[] distTo;
     /** Should be null for all vertices by default */
     protected Edge[] edgeTo;
 
-    public AcyclicLP(EdgeWeightedDigraph g, int source) {
+    public AcyclicLongestPath(EdgeWeightedDigraph g, int source) {
         distTo = new double[g.vertices()];
         edgeTo = new Edge[g.vertices()];
         Arrays.fill(distTo, Double.NEGATIVE_INFINITY);
@@ -27,7 +26,7 @@ public class AcyclicLP {
 
     /**
      * Relax Edge e
-     * 
+     *
      * @param e edge
      */
     protected void relax(Edge e) {
@@ -55,7 +54,7 @@ public class AcyclicLP {
 
     /**
      * Longest distance from source to v
-     * 
+     *
      * @param v
      * @return shortest distance from source to v
      */
@@ -65,7 +64,7 @@ public class AcyclicLP {
 
     /**
      * Has Path from source to v
-     * 
+     *
      * @param v
      * @return has path from source to v
      */
@@ -75,7 +74,7 @@ public class AcyclicLP {
 
     /**
      * Return path from source to v, or empty list if there is no such path.
-     * 
+     *
      * @param v v
      * @return path from source to v
      */
@@ -105,7 +104,7 @@ public class AcyclicLP {
         EdgeWeightedDigraph g = new EdgeWeightedDigraph(fname);
         System.out.println(fname + ", " + g.toString());
 
-        AcyclicLP acyclicLP = new AcyclicLP(g, 5);
+        AcyclicLongestPath acyclicLP = new AcyclicLongestPath(g, 5);
 
         System.out.println("Longest Paths to vertices: ");
         acyclicLP.longestPath().forEach(ite -> System.out.println(ite));

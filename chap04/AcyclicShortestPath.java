@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class AcyclicSP {
+public class AcyclicShortestPath {
 
     /**
      * Should be Double.POSITIVE_INFINITY for all vertices except {@code source} by
@@ -10,7 +10,7 @@ public class AcyclicSP {
     /** Should be null for all vertices by default */
     private Edge[] edgeTo;
 
-    public AcyclicSP(EdgeWeightedDigraph g, int source) {
+    public AcyclicShortestPath(EdgeWeightedDigraph g, int source) {
         distTo = new double[g.vertices()];
         edgeTo = new Edge[g.vertices()];
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
@@ -105,7 +105,7 @@ public class AcyclicSP {
         EdgeWeightedDigraph g = new EdgeWeightedDigraph(fname);
         System.out.println(fname + ", " + g.toString());
 
-        AcyclicSP acyclicSP = new AcyclicSP(g, 5);
+        AcyclicShortestPath acyclicSP = new AcyclicShortestPath(g, 5);
 
         System.out.println("Shortest Paths to vertices: ");
         acyclicSP.shortestPaths().forEach(ite -> System.out.println(ite));
