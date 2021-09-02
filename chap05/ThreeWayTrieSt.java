@@ -21,17 +21,17 @@ import java.util.*;
  * Notice that TST does not support keysThatMatch() method in TrieSt
  */
 public class ThreeWayTrieSt {
-    private Node root = null;
+    private WNode root = null;
     private int n = 0;
 
-    private static class Node {
+    private static class WNode {
         private int c;
         private int v = 0;
-        private Node left = null;
-        private Node mid = null;
-        private Node right = null;
+        private WNode left = null;
+        private WNode mid = null;
+        private WNode right = null;
 
-        Node(int c) {
+        WNode(int c) {
             this.c = c;
         }
     }
@@ -72,9 +72,9 @@ public class ThreeWayTrieSt {
         root = put(root, key, 0);
     }
 
-    private Node put(Node curr, String key, int d) {
+    private WNode put(WNode curr, String key, int d) {
         if (curr == null) {
-            curr = new Node(key.charAt(d));
+            curr = new WNode(key.charAt(d));
         }
         if (d == key.length()) {
             return curr;
@@ -100,11 +100,11 @@ public class ThreeWayTrieSt {
      * @return
      */
     public int get(String key) {
-        Node n = get(root, key, 0);
+        WNode n = get(root, key, 0);
         return n == null ? -1 : n.v;
     }
 
-    private Node get(Node curr, String key, int d) {
+    private WNode get(WNode curr, String key, int d) {
         if (curr == null)
             return null;
         if (d == key.length())
@@ -131,7 +131,7 @@ public class ThreeWayTrieSt {
         return ls.toString();
     }
 
-    private void dfs(Node curr, String prefix, List<String> ls) {
+    private void dfs(WNode curr, String prefix, List<String> ls) {
         if (curr == null) {
             return;
         }
@@ -148,7 +148,7 @@ public class ThreeWayTrieSt {
         root = del(root, key, 0);
     }
 
-    private Node del(Node curr, String key, int d) {
+    private WNode del(WNode curr, String key, int d) {
         if (curr == null)
             return null;
 

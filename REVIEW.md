@@ -1,8 +1,8 @@
 # Book Review
 
-## Chapter 1
+# Chapter 1
 
-### 1.1 GCD (Greatest Common Divisor) Algorithm
+## 1.1 GCD (Greatest Common Divisor) Algorithm
 
 (p.1)
 
@@ -29,7 +29,7 @@ int gcd(int a, int b) {
 }
 ```
 
-### 1.2 Reverse Array
+## 1.2 Reverse Array
 
 (p.11)
 
@@ -47,7 +47,7 @@ void reverse(int[] a) {
 }
 ```
 
-### 1.3 Check Prime Number
+## 1.3 Check Prime Number
 
 (p.13)
 
@@ -65,11 +65,11 @@ boolean isPrime(int N) {
 }
 ```
 
-### 1.4 Calculate Sqaure Root
+## 1.4 Calculate Sqaure Root
 
 (p.13)
 
-Newton's method, move towards the sqaure root, until the estimate is close enough to be considered as a square root.
+Newton's method, move towards the square root, until the estimate is close enough to be considered as a square root.
 
 ```
 double sqrt(double c) {
@@ -89,10 +89,10 @@ double sqrt(double c) {
 }
 ```
 
-For the precision part, we can also change it a bit as follows for better understanding. 1e-15 is much more precise than 1e-5, and will yield differet result. For example, for `varient_sqrt(24)`: when `err = 1`, it yields a result of 4.911996, but when `err = 1e-5`, it yields a result of 4.898979.
+For the precision part, we can also change it a bit as follows for better understanding. 1e-15 is much more precise than 1e-5, and will yield different result. For example, for `variant_sqrt(24)`: when `err = 1`, it yields a result of 4.911996, but when `err = 1e-5`, it yields a result of 4.898979.
 
 ```
-double varient_sqrt(double c) {
+double variant_sqrt(double c) {
     if (c < 0)
         return Double.NaN;
 
@@ -110,7 +110,7 @@ double varient_sqrt(double c) {
 }
 ```
 
-### 1.5 Binary Searching
+## 1.5 Binary Searching
 
 (p.28)
 
@@ -171,7 +171,7 @@ int binarySearch(int k, int arr[], int l, int h) {
     }
 ```
 
-### 1.6 Bag
+## 1.6 Bag
 
 (p.74)
 
@@ -192,32 +192,6 @@ public class LinkedBag<T> implements Bag<T> {
         head = n;
         size++;
     }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new LinkedBagIterator(head);
-    }
-
-    private static class LinkedBagIterator<T> implements Iterator<T> {
-
-        private Node<T> head;
-
-        private LinkedBagIterator(Node<T> head) {
-            this.head = head;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return head != null;
-        }
-
-        @Override
-        public T next() {
-            T t = head.val;
-            head = head.next;
-            return t;
-        }
-    }
 }
 ```
 
@@ -236,42 +210,14 @@ public class ArrayBag<T> implements Bag<T> {
         array[ptr++] = t;
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new ArrayBagIterator(Arrays.copyOfRange(array, 0, ptr));
-    }
-
-    private void resize() {
-        array = Arrays.copyOf(array, array.length << 2);
-    }
-
-    private static class ArrayBagIterator<T> implements Iterator<T> {
-
-        private T[] objects;
-        private int ptr = 0;
-
-        private ArrayBagIterator(T[] objects) {
-            this.objects = objects;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return ptr < objects.length;
-        }
-
-        @Override
-        public T next() {
-            return objects[ptr++];
-        }
-    }
 }
 ```
 
-### 1.7 Queue
+## 1.7 Queue
 
 Queue is First-In-First-Out ADT. If the implementation is singly-linked queue (as below); nodes will be enqueued at tail, the old tail points to the new node, and the new node becomes the tail; and nodes will be dequeued at head, and head.next becomes the new head, so the old head is simply unlinked.
 
-When the queue is emtpy, and a node is added, both the head and the tail will point to the new node, in this case, the queue is simply a 1 length linked list. When the queue has only one single node, both the head and tail points to the same node just like how we have added the first node.
+When the queue is empty, and a node is added, both the head and the tail will point to the new node, in this case, the queue is simply a 1 length linked list. When the queue has only one single node, both the head and tail points to the same node just like how we have added the first node.
 
 If one tries to dequeue a value, then the head will be null, because the old head's next is null, in such case, we need to set the tail as null as well (remember, now both the head and tail points to the same node, if the head is now dequeued and becomes null, the tail will still be pointing to the node that we just dequeued), because in an empty queue, both the head and tail should be null.
 
@@ -312,31 +258,10 @@ public class LinkedQueue<T> implements Queue<T> {
         size--;
         return t;
     }
-
-    private static class LinkedQueueIterator<T> implements Iterator<T> {
-
-        private Node<T> head;
-
-        private LinkedQueueIterator(Node<T> head) {
-            this.head = head;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return head != null;
-        }
-
-        @Override
-        public T next() {
-            T t = head.val;
-            head = head.next;
-            return t;
-        }
-    }
 }
 ```
 
-### 1.8 Stack
+## 1.8 Stack
 
 Stack is LIFO Last-In-First-Out ADT.
 
@@ -367,31 +292,6 @@ public class LinkedStack<T> implements Stack<T> {
             return t;
         }
     }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new LinkedIterator();
-    }
-
-    private class LinkedIterator implements Iterator<T> {
-
-        private Node<T> root = head;
-
-        private LinkedIterator() {
-        }
-
-        @Override
-        public boolean hasNext() {
-            return root != null;
-        }
-
-        @Override
-        public T next() {
-            T t = root.val;
-            root = root.next;
-            return t;
-        }
-    }
 }
 
 ```
@@ -401,18 +301,8 @@ public class LinkedStack<T> implements Stack<T> {
 ```
 public class ArrayStack<T> implements Stack<T> {
 
-    private static final int MIN_CAPACITY = 1 << 4;
-
     private T[] arr;
     private int size;
-
-    public ArrayStack() {
-        arr = (T[]) new Object[MIN_CAPACITY];
-    }
-
-    public ArrayStack(int capacity) {
-        arr = (T[]) new Object[capacity];
-    }
 
     @Override
     public void push(T s) {
@@ -430,30 +320,10 @@ public class ArrayStack<T> implements Stack<T> {
             resize(capacity() >> 1); // shrink
         return t;
     }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ArrayStackIterator();
-    }
-
-    private class ArrayStackIterator implements Iterator<T> {
-
-        private int i = size;
-
-        @Override
-        public boolean hasNext() {
-            return i > 0;
-        }
-
-        @Override
-        public T next() {
-            return arr[--i];
-        }
-    }
 }
 ```
 
-### 1.9 Dijkstra Double Stack
+## 1.9 Dijkstra Double Stack
 
 In this example each number and operators are delimited by a single space, and each `(...)` can only contain 1 operator and two operands. For example `"( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) )"`.
 
@@ -500,15 +370,15 @@ public static double interpret(String expr) {
 }
 ```
 
-### 1.10 Union Find Algorithm
+## 1.10 Union Find Algorithm
 
 "A disjoint-set data structure, also called a union–find data structure or merge–find set, is a data structure that stores a collection of disjoint (non-overlapping) sets."
 
 A Union find algorithm may be used to find whether there is connection between the two sets S1 and S2, such that it connects the node A in S1 and the node B in S2.
 
-A graph can be seperated as two sets (two groups of nodes), so a Union-Find algorithm might also be used for graphs.
+A graph can be separated as two sets (two groups of nodes), so a Union-Find algorithm might also be used for graphs.
 
-#### 1.10.1 API of an Union-Find Algorithm
+### 1.10.1 API of an Union-Find Algorithm
 
 If A connects to B and B connects to C, A connects to C, and A, B, C all share the same path (as well as the id of the path). In order words, if `find(A) == find(B)`, then we know A is connected to B.
 
@@ -537,7 +407,7 @@ public interface UnionFind {
 }
 ```
 
-#### 1.10.2 Quick-Find Algorithm
+### 1.10.2 Quick-Find Algorithm
 
 The algorithm is as follows:
 
@@ -589,7 +459,7 @@ public class UnionQuickFind implements UnionFind {
 }
 ```
 
-#### 1.10.3 Quick-Union Algorithm
+### 1.10.3 Quick-Union Algorithm
 
 The difference between Quick-Find and Quick-Union algorithms are that, Quick-Find algorithm maintains an id of path of each nodes, such that the connected nodes share the same id; however, the Quick-Union maintains a root of each node, so the `find(p)` returns the root node of `p`, if `find(p) == find(q)`, they are connected, it also means they are on the same tree. If a node is not connected to any other nodes, then as we might guess `find(p) = p`.
 
@@ -642,18 +512,18 @@ public class UnionQuickUnion implements UnionFind {
 }
 ```
 
-#### 1.10.4 Weighted Quick Union
+### 1.10.4 Weighted Quick Union
 
 Weighted Quick-Union is just like Quick-Union algorithm, except that the root node's weight is recorded, and the sub-trees are connected to the root node that has less weight.
 
 ```
-public class WeightedQuickUnionC implements UnionFind {
+public class WeightedQuickUnion implements UnionFind {
 
     private int[] root;
     private int[] weight;
     private int count;
 
-    public WeightedQuickUnionC(final int numOfElements) {
+    public WeightedQuickUnion(final int numOfElements) {
         root = new int[numOfElements];
         weight = new int[numOfElements];
         for (int i = 0; i < numOfElements; i++) {
@@ -696,9 +566,9 @@ public class WeightedQuickUnionC implements UnionFind {
 }
 ```
 
-## Chapter 2
+# Chapter 2
 
-### 2.1 Selection Sort
+## 2.1 Selection Sort
 
 (p.155)
 
@@ -723,7 +593,7 @@ void sort(Comparable[] arr) {
 }
 ```
 
-### 2.2 Insertion Sort
+## 2.2 Insertion Sort
 
 (p.157)
 
@@ -746,7 +616,7 @@ void sort(Comparable[] arr, int l, int h) {
 }
 ```
 
-### 2.3 Shell Sort
+## 2.3 Shell Sort
 
 (p.162)
 
@@ -758,7 +628,7 @@ For example, with gap of 4, for the first iteration, we starts at 4_th, and we s
 
 Algorithm:
 
-1. set the gap as `lengh / 3`, decrease it by 1 until it becomes 1
+1. set the gap as `length / 3`, decrease it by 1 until it becomes 1
 2. starting at the item at `gap_th` (say i_th), check the i-gap_th item and swap them if necessary, notice that it's moving backward
 3. continue, until `gap < 1`.
 
@@ -777,7 +647,7 @@ void sort(Comparable[] arr) {
 }
 ```
 
-### 2.4 Merge Sort
+## 2.4 Merge Sort
 
 (p.170)
 
@@ -786,7 +656,7 @@ O(nlog n) time complexity.
 Algorithm:
 
 1. recursively split the array half
-2. merge the splited parts, i.e., make extra copy, insert the smaller items first then the greater items, after merging, this sub-list is sorted.
+2. merge the split parts, i.e., make extra copy, insert the smaller items first then the greater items, after merging, this sub-list is sorted.
 3. continue merging until the whole array is merged and thus sorted
 
 ```
@@ -834,7 +704,7 @@ void merge(Comparable[] arr, int l, int m, int h) {
 }
 ```
 
-### 2.5 Quick Sort
+## 2.5 Quick Sort
 
 (p.182)
 
@@ -843,8 +713,8 @@ O(nlog n) time complexity.
 Algorithm:
 
 1. partition the array, by which it means having a pivot that is at the correct position, where all the smaller values are on the left, and the greater values are on the right, the correct position of this pivot is then returned
-2. use the returned position of pivot to cut the array half, then continues partioning the elements before the pivot and the elements after the pivot, notice that the pivot is not included for the following partioning, because it's at the correct position already
-3. inside the partioning process, in this demo, the pivot is always the value of the left most element (this can be any element), and we move `lp` forwards to find any value that is greater than pivot (i.e., incorrect position) and `rp` backwards to find any value that is less than pivot. At this case, we have two values that are at the incorrect positions, we than swap them, such that these two elements are now at the correct positions. if `lp == upper` or `hp == lower` or `lp >= hp`, it means that we simply won't find any element that is at the incorrect position (compared with pivot). In all cases, the `hp` will be the correct position for the pivot.
+2. use the returned position of pivot to cut the array half, then continues partitioning the elements before the pivot and the elements after the pivot, notice that the pivot is not included for the following partitioning, because it's at the correct position already
+3. inside the partitioning process, in this demo, the pivot is always the value of the left most element (this can be any element), and we move `lp` forwards to find any value that is greater than pivot (i.e., incorrect position) and `rp` backwards to find any value that is less than pivot. At this case, we have two values that are at the incorrect positions, we than swap them, such that these two elements are now at the correct positions. if `lp == upper` or `hp == lower` or `lp >= hp`, it means that we simply won't find any element that is at the incorrect position (compared with pivot). In all cases, the `hp` will be the correct position for the pivot.
 
 ```
 void qs(Comparable[] arr, int l, int h) {
@@ -880,7 +750,7 @@ int partition(Comparable[] arr, int lower, int upper) {
 }
 ```
 
-### 2.6 Three-Way Quick Sort
+## 2.6 Three-Way Quick Sort
 
 (p.187)
 
@@ -921,7 +791,7 @@ void qs(Comparable[] arr, int l, int h) {
 }
 ```
 
-### 2.7 PriorityQueue
+## 2.7 PriorityQueue
 
 (p.195)
 
@@ -934,11 +804,11 @@ The heap expands (by inserting new elements) from `pq[1]` towards `pq[++size]`. 
 Two important operations involved for insertion and deletion:
 
 1. swim: bottom-up approach to move the given item to its correct position
-2. sink: top-down appraoch to move the given item to its correct position
+2. sink: top-down approach to move the given item to its correct position
 
 These two operations are basically used to make sure that the parent node is always greater than the child nodes.
 
-#### 2.7.1 Swim Operation
+## 2.7.1 Swim Operation
 
 When we insert a new item, we insert it into `pq[++size]`, which is supposed be the minimum value. We then call `swim(size)`, swaping child and parents starting at the bottom (or the last item). We first get the parent of current node (the newly inserted item), we then check if it's greater than its parent, if so, swap them, and continue until the parent is greater than this newly inserted item or it becomes the root.
 
@@ -957,7 +827,7 @@ private void swim(int node) {
 }
 ```
 
-#### 2.7.2 Sink Operation
+### 2.7.2 Sink Operation
 
 Sink operation is used for removing max value. Max value is the root node of the heap. When we remove an item (pop the max item), we retrieves the value of the root, swap the root with the last item `pq[size]`. Now, the root is previously located at `pq[size]` and has the minimum value in the heap. We call `sink(root)` (or `sink(1)`) to move it to it's correct position.
 
@@ -989,7 +859,7 @@ private void sink(int parent) {
 }
 ```
 
-#### 2.7.3 Full Implementation
+### 2.7.3 Full Implementation
 
 ```
 public class MaxPQ<K extends Comparable<K>> {
@@ -1065,9 +935,9 @@ public class MaxPQ<K extends Comparable<K>> {
     }
 ```
 
-## Chapter 3
+# Chapter 3
 
-### 3.1 Sequential Search Symbol Table
+## 3.1 Sequential Search Symbol Table
 
 (p.236)
 
@@ -1124,7 +994,7 @@ public class SequentialSearchST<K extends Comparable<K>, V> {
 }
 ```
 
-### 3.2 Binary Search Symbol Table
+## 3.2 Binary Search Symbol Table
 
 (p.239)
 
@@ -1214,11 +1084,11 @@ public class BinarySearchST<K extends Comparable<K>, V> {
 }
 ```
 
-### 3.3 Binary Search Tree
+## 3.3 Binary Search Tree
 
 (p.250)
 
-In Binary Search Tree, every nodes in the left sub-tree are less than current node, and every nodes in the right sub-stree are greater than current node. An ordinal BST is not balanced, so, everything is much simpler.
+In Binary Search Tree, every nodes in the left sub-tree are less than current node, and every nodes in the right sub-tree are greater than current node. An ordinal BST is not balanced, so, everything is much simpler.
 
 For insertion, we just traverse the tree, find the correct position (if the key is less than current node, go to left sub-tree, else go to the right sub-tree, the key is only comparing with the root of a sub-tree).
 
@@ -1226,7 +1096,7 @@ Deletion will be a bit more complicated, when we delete a node `K`, which is not
 
 For example (see examples below), we have found `K` and we want to delete it. We know that we will need to somehow make `C` and `D` becomes a new sub-tree, and connects this sub-tree to `B` without violating the rule of BST. If both left child and right child of `K` are null, then we just return null. If the right child is null, we return left child, vice versa.
 
-Recall that in BST, all right child nodes are greater than current node, so we know that `D` and any nodes under `D` is greater than `K` as well as the left sub-tree of `K` (sub-tree rooted at `C`). Since the left sub-tree of `K` is always less than the right sub-tree of `K`, we just leave left sub-tree there. Then, We simply move the left-most (min) of `D` which is `H`, and make repalce `K` with `H`.
+Recall that in BST, all right child nodes are greater than current node, so we know that `D` and any nodes under `D` is greater than `K` as well as the left sub-tree of `K` (sub-tree rooted at `C`). Since the left sub-tree of `K` is always less than the right sub-tree of `K`, we just leave left sub-tree there. Then, We simply move the left-most (min) of `D` which is `H`, and make replace `K` with `H`.
 
 I.e., **_To delete K, replace K with the left-most node under K.right_**
 
@@ -1363,7 +1233,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
 }
 ```
 
-### 3.4 2-3 Tree
+## 3.4 2-3 Tree
 
 (p.269)
 
@@ -1392,7 +1262,7 @@ Split them/balance them:
  /  |  \
 ```
 
-### 3.5 Red-Black Tree
+## 3.5 Red-Black Tree
 
 (p.275)
 
@@ -1406,7 +1276,7 @@ A red-black tree is a binary search tree as well as a 2-3 tree. A red path betwe
 
 For convenience, in implementation, we consider a path from `A` to `B` as a red path by looking at the `isRed` variable in `B`. I.e., if `B.isRed == true`, the path `A->B` is red, else it's black. So, the root is always black. Further, the newly inserted node is always at the bottom (just like Binary Search Tree), and this node is always red (`isRed = true`), in other words, the path that points to this newly inserted node is always red (recall how 2-3 tree insert nodes). After the insertion, we balance the parent node of this newly inserted node.
 
-#### 3.5.1 Rotation
+### 3.5.1 Rotation
 
 When we insert or remove a node from the tree, we need to re-balance the tree. For red-black tree, we use a technique called `Rotation`. The insertion without balancing is almost the same as the Binary Search Tree.
 
@@ -1492,7 +1362,7 @@ Node<K, V> rotateRight(Node<K, V> n) {
 }
 ```
 
-#### 3.5.2 When To Rotate
+### 3.5.2 When To Rotate
 
 For node `N`, three situations should be taken care of, the null node is considered as black node. We do rotation following below algorithm:
 
@@ -1657,7 +1527,7 @@ we flip their colors:
 
 Finally, it's impossible to have `N` as black 3-node, and then at the same time, insert a newly created nodes to it's left (`N.left`).
 
-#### 3.5.3 Implementation
+### 3.5.3 Implementation
 
 ```
 public class RedBlackTree<K extends Comparable<K>, V> {
@@ -1718,7 +1588,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 }
 ```
 
-### 3.6 Separate Chaining Hash Table
+## 3.6 Separate Chaining Hash Table
 
 (p.297)
 
@@ -1729,14 +1599,6 @@ public class SeparateChainingHashST<K extends Comparable<K>, V> {
     private final int M;
     private SequentialSearchST<K, V>[] st;
     private int size = 0;
-
-    public SeparateChainingHashST(int size) {
-        this.M = size;
-        st = (SequentialSearchST<K, V>[]) new SequentialSearchST[M];
-        for (int i = 0; i < M; i++) {
-            st[i] = new SequentialSearchST<>();
-        }
-    }
 
     public V get(K k) {
         return (V) st[hash(k)].get(k);
@@ -1761,7 +1623,7 @@ public class SeparateChainingHashST<K extends Comparable<K>, V> {
 }
 ```
 
-### 3.7 Linear Probing Hash Table
+## 3.7 Linear Probing Hash Table
 
 (p.301)
 
@@ -1848,9 +1710,9 @@ public class LinearProbingHashST<K extends Comparable<K>, V> {
 
 ```
 
-## Chapter 4
+# Chapter 4
 
-### 4.1 Graph Terminology
+## 4.1 Graph Terminology
 
 (p.331)
 
@@ -1858,23 +1720,23 @@ public class LinearProbingHashST<K extends Comparable<K>, V> {
 - Undirected Graph 无向图.
 - Cycle 自环
 - Parallel Edge 平行边
-  - Egdes that connect to same pair of nodes
+- Edges that connect to same pair of nodes
 - Adjacent Vertices 相邻顶点
-  - Vertices that are connected by an edge
+- Vertices that are connected by an edge
 - Degree (of a vertex) 度数
-  - The number of edges connected to the vertex
+- The number of edges connected to the vertex
 - Connected Graph 连通图
-  - Any vertex can find a path connected any other vertices
+- Any vertex can find a path connected any other vertices
 - Tree
-  - A connected graph without cycle
+- A connected graph without cycle
 - Spanning Tree 生成树
-  - Spanning tree is a sub-graph that contains all the vertices of the graph.
+- Spanning tree is a sub-graph that contains all the vertices of the graph.
 - Forest
-  - A set of disconnected trees
+- A set of disconnected trees
 - Sparse Tree 稀疏图
 - Dense Tree 稠密图
 
-### 4.1 Implementing Graph
+## 4.1 Implementing Graph
 
 (p.335)
 
@@ -1882,11 +1744,11 @@ There are three way to describe a graph:
 
 1. Adjacency Matrix
 
-   - A N \* N matrix, to represent if v and w is connected. For example, if `matrix[v][w] == true`, than v is connected to w, vice versa. But this implementation takes a lots of spaces, so it's usually not appropriate. Furthermore, if parallel edge is permitted, adjacency matrix can't be used.
+- A N \* N matrix, to represent if v and w is connected. For example, if `matrix[v][w] == true`, than v is connected to w, vice versa. But this implementation takes a lots of spaces, so it's usually not appropriate. Furthermore, if parallel edge is permitted, adjacency matrix can't be used.
 
 2. Edge Array
 
-   - Use an array to store all the edges (e.g., create an Edge class to represent an edge), but this implementation makes it slow to find adjacent edges. For example, `List<Edge> edges ...`.
+- Use an array to store all the edges (e.g., create an Edge class to represent an edge), but this implementation makes it slow to find adjacent edges. For example, `List<Edge> edges ...`.
 
 3. Adjacency List
 
@@ -1896,43 +1758,43 @@ There are three way to describe a graph:
 
 ```
 public class Graph {
-    /** vertices count */
-    private int V;
-    /** edges count */
-    private int E = 0;
-    private List<Integer>[] adjacencyList = null;
+/** vertices count */
+private int V;
+/** edges count */
+private int E = 0;
+private List<Integer>[] adjacencyList = null;
 
-    public Graph(int v) {
-        this.V = v;
-        adjacencyList = emptyAdjacencyList(V);
-    }
+public Graph(int v) {
+    this.V = v;
+    adjacencyList = emptyAdjacencyList(V);
+}
 
-    /**
-     * Add Edge between v-w. O(1)
-     */
-    public void addEdge(int v, int w) {
-        adjacencyList[v].add(w);
-        adjacencyList[w].add(v);
-        E++;
-    }
+/**
+    * Add Edge between v-w. O(1)
+    */
+public void addEdge(int v, int w) {
+    adjacencyList[v].add(w);
+    adjacencyList[w].add(v);
+    E++;
+}
 
-    /**
-     * Return neighbours (adjacent vertices)
-     */
-    public List<Integer> adjacent(int v) {
-        return adjacencyList[v];
-    }
+/**
+    * Return neighbours (adjacent vertices)
+    */
+public List<Integer> adjacent(int v) {
+    return adjacencyList[v];
+}
 
-    /**
-     * Degree of a vertex
-     */
-    public int degree(int v) {
-        return adjacent(v).size();
-    }
+/**
+    * Degree of a vertex
+    */
+public int degree(int v) {
+    return adjacent(v).size();
+}
 }
 ```
 
-### 4.2 Depth First Search
+## 4.2 Depth First Search
 
 (p.338)
 
@@ -1941,35 +1803,35 @@ The implementation below uses `boolean[] marked` to record whether we have seen 
 ```
 public class DFS {
 
-    private boolean[] marked;
-    private int count;
+private boolean[] marked;
+private int count;
 
-    /**
-     * @param g Graph
-     * @param s Source (the node that DFS starts)
-     */
-    public DFS(Graph g, int s) {
-        marked = new boolean[g.vertices()];
-        count = 0;
-        dfs(g, s);
-    }
+/**
+    * @param g Graph
+    * @param s Source (the node that DFS starts)
+    */
+public DFS(Graph g, int s) {
+    marked = new boolean[g.vertices()];
+    count = 0;
+    dfs(g, s);
+}
 
-    private void dfs(Graph g, int v) {
-        mark(v);
-        count++;
-        for (int w : g.adjacent(v)) {
-            if (!isMarked(w))
-                dfs(g, w);
-        }
+private void dfs(Graph g, int v) {
+    mark(v);
+    count++;
+    for (int w : g.adjacent(v)) {
+        if (!isMarked(w))
+            dfs(g, w);
     }
+}
 
-    private void mark(int v) {
-        marked[v] = true;
-    }
+private void mark(int v) {
+    marked[v] = true;
+}
 
-    private boolean isMarked(int v) {
-        return marked[v];
-    }
+private boolean isMarked(int v) {
+    return marked[v];
+}
 }
 ```
 
@@ -1979,30 +1841,30 @@ In some cases, we no only want to check if such a path exists, we want to retrie
 int[] parentOf;
 
 void dfs(Graph g, int v) {
-    marked[v] = true;
-    for (int w : g.adjacent(v)) {
-        if (!marked[w]) {
-            parentOf[w] = v; // v->w
-            dfs(g, w);
-        }
+marked[v] = true;
+for (int w : g.adjacent(v)) {
+    if (!marked[w]) {
+        parentOf[w] = v; // v->w
+        dfs(g, w);
     }
+}
 }
 
 /** From v->source */
 Iterable<Integer> pathTo(int v) {
-    if (!hasPathTo(v))
-        return null;
+if (!hasPathTo(v))
+    return null;
 
-    Deque<Integer> deque = new LinkedList<>();
-    for (int x = v; x != source; x = parentOf[x]) {
-        deque.add(x);
-    }
-    deque.add(source);
-    return deque;
+Deque<Integer> deque = new LinkedList<>();
+for (int x = v; x != source; x = parentOf[x]) {
+    deque.add(x);
+}
+deque.add(source);
+return deque;
 }
 ```
 
-### 4.3 Breath First Search
+## 4.3 Breath First Search
 
 (p.344)
 
@@ -2010,23 +1872,23 @@ BFS is also used for finding the shortest path between two vertices.
 
 ```
 void bfs(Graph g, int v) {
-    Queue<Integer> queue = new LinkedList<>();
-    queue.offer(v);
-    marked[v] = true;
-    while (!queue.isEmpty()) {
-        int x = queue.poll();
-        for (int w : g.adjacent(x)) {
-            if (!marked[w]) {
-                marked[w] = true;
-                parentOf[w] = x; // x->w
-                queue.offer(w);
-            }
+Queue<Integer> queue = new LinkedList<>();
+queue.offer(v);
+marked[v] = true;
+while (!queue.isEmpty()) {
+    int x = queue.poll();
+    for (int w : g.adjacent(x)) {
+        if (!marked[w]) {
+            marked[w] = true;
+            parentOf[w] = x; // x->w
+            queue.offer(w);
         }
     }
 }
+}
 ```
 
-### 4.4 Connected Components
+## 4.4 Connected Components
 
 连通分量
 
@@ -2038,19 +1900,19 @@ Connected components in graph, refers to those connected sub-graphs. In a connec
 List<List<Integer>> components;
 
 ConnectedComponents(Graph g) {
-    marked = new boolean[g.vertices()];
-    components = new ArrayList<>();
-    for (int x = 0; x < g.vertices(); x++) {
-        if (!marked[x]) {
-            List<Integer> l = new ArrayList<>();
-            dfs(g, x, l);
-            components.add(l);
-        }
+marked = new boolean[g.vertices()];
+components = new ArrayList<>();
+for (int x = 0; x < g.vertices(); x++) {
+    if (!marked[x]) {
+        List<Integer> l = new ArrayList<>();
+        dfs(g, x, l);
+        components.add(l);
     }
+}
 }
 ```
 
-### 4.5 Detect Cycle With DFS
+## 4.5 Detect Cycle With DFS
 
 (p.353)
 
@@ -2060,27 +1922,27 @@ Notice that, **do not** use `marked[x]` to identify cycle, because graph may not
 
 ```
 Cycle(Graph g) {
-    marked = new boolean[g.vertices()];
-    onStack = new boolean[g.vertices()];
-    hasCycle = false;
-    for (int x = 0; x < g.vertices(); x++) {
-        if (!marked[x]) {
-            dfs(g, x);
-        }
+marked = new boolean[g.vertices()];
+onStack = new boolean[g.vertices()];
+hasCycle = false;
+for (int x = 0; x < g.vertices(); x++) {
+    if (!marked[x]) {
+        dfs(g, x);
     }
+}
 }
 
 void dfs(Graph g, int v) {
-    marked[v] = true;
-    onStack[v] = true;
-    for (int w : g.adjacent(v)) {
-        if (!marked[w]) {
-            dfs(g, w);
-        } else if (onStack[w]) {
-            hasCycle = true;
-        }
+marked[v] = true;
+onStack[v] = true;
+for (int w : g.adjacent(v)) {
+    if (!marked[w]) {
+        dfs(g, w);
+    } else if (onStack[w]) {
+        hasCycle = true;
     }
-    onStack[v] = false;
+}
+onStack[v] = false;
 }
 ```
 
@@ -2088,27 +1950,27 @@ void dfs(Graph g, int v) {
 
 ```
 void dfs(Digraph g, int v) {
-    marked[v] = true;
-    onStack[v] = true;
-    for (int w : g.adjacent(v)) {
-        if (hasCycle) // cycleStack != null
-            return;
-        else if (!marked[w]) {
-            parentOf[w] = v;
-            dfs(g, w);
-        } else if (onStack[w]) { // cycle detected
-            cycleStack = new Stack<>();
-            for (int x = v; x != w; x = parentOf[x]) {
-                cycleStack.push(x);
-            }
-            cycleStack.push(w);
-            cycleStack.push(v); }
-    }
-    onStack[v] = false;
+marked[v] = true;
+onStack[v] = true;
+for (int w : g.adjacent(v)) {
+    if (hasCycle) // cycleStack != null
+        return;
+    else if (!marked[w]) {
+        parentOf[w] = v;
+        dfs(g, w);
+    } else if (onStack[w]) { // cycle detected
+        cycleStack = new Stack<>();
+        for (int x = v; x != w; x = parentOf[x]) {
+            cycleStack.push(x);
+        }
+        cycleStack.push(w);
+        cycleStack.push(v); }
+}
+onStack[v] = false;
 }
 ```
 
-### 4.6 Detect Bipartite With DFS
+## 4.6 Detect Bipartite With DFS
 
 二分图
 
@@ -2124,9 +1986,9 @@ E.g.,
 A->B->C->D
 
 Black Set          Red Set
-            |
+        |
 A  ---------|-------> B
-            |         |
+        |         |
 C <---------|---------
 |           |         |
 ------------|-------> D
@@ -2136,42 +1998,42 @@ C <---------|---------
 A->B->C->A
 
 Black Set          Red Set
-            |
- -----------|-------> B
+        |
+-----------|-------> B
 A           |         |
- <----------|---------C
-            |
-            |
+<----------|---------C
+        |
+        |
 ```
 
 Implementation:
 
 ```
 Bipartite(Graph g) {
-    colours = new int[g.vertices()];
-    isBipartite = true;
+colours = new int[g.vertices()];
+isBipartite = true;
 
-    // graph might not be connected
-    for (int i = 0; i < g.vertices() && isBipartite; i++) {
-        if (colours[i] == UNCOLOURED)
-            dfs(g, i, RED);
-    }
+// graph might not be connected
+for (int i = 0; i < g.vertices() && isBipartite; i++) {
+    if (colours[i] == UNCOLOURED)
+        dfs(g, i, RED);
+}
 }
 
 void dfs(Graph g, int v, int c) {
-    colours[v] = c;
-    for (int w : g.adjacent(v)) {
-        if (colours[w] == UNCOLOURED) {
-            dfs(g, w, c == RED ? BLACK : RED);
-        } else if (colours[w] == colours[v]) {
-            isBipartite = false;
-            return;
-        }
+colours[v] = c;
+for (int w : g.adjacent(v)) {
+    if (colours[w] == UNCOLOURED) {
+        dfs(g, w, c == RED ? BLACK : RED);
+    } else if (colours[w] == colours[v]) {
+        isBipartite = false;
+        return;
     }
+}
 }
 ```
 
-### 4.7 Directed Graph
+## 4.7 Directed Graph
 
 (p.366)
 
@@ -2181,9 +2043,9 @@ The only difference from the undirected graph is as follows:
 
 ```
 public void addEdge(int v, int w) {
-    adjacencyList[v].add(w);
-    adjacencyList[w].add(v);
-    E++;
+adjacencyList[v].add(w);
+adjacencyList[w].add(v);
+E++;
 }
 ```
 
@@ -2191,18 +2053,18 @@ public void addEdge(int v, int w) {
 
 ```
 public void addEdge(int v, int w) {
-    adjacencyList[v].add(w);
-    E++;
+adjacencyList[v].add(w);
+E++;
 }
 ```
 
-### 4.8 Directed DFS and BFS
+## 4.8 Directed DFS and BFS
 
 (p.368)
 
 Same as Undirected DFS and BFS, implementation doesn't even need to change between undirected graph and directed graph.
 
-### 4.9 Directed Acylic Graph
+## 4.9 Directed Acyclic Graph
 
 - 有向无环图
 
@@ -2210,7 +2072,7 @@ Same as Undirected DFS and BFS, implementation doesn't even need to change betwe
 
 DAG is a directed graph without cycles. Dependency graph should be a DAG, if there is a cycle, the dependencies can't be solved. Cycles in directed graph can be detected using DFS. The idea and implementation is the same as the undirected graph. See 4.5.
 
-### 4.10 Pre-Order, In-Order, Post-Order Traversal
+## 4.10 Pre-Order, In-Order, Post-Order Traversal
 
 - Pre-Order 前序
 - In-Order 中序
@@ -2219,41 +2081,41 @@ DAG is a directed graph without cycles. Dependency graph should be a DAG, if the
 **For tree:**
 
 1. Pre-Order
-   - current node first
-   - then left node
-   - finally the right node
+- current node first
+- then left node
+- finally the right node
 2. In-Order
-   - left node first
-   - then current node
-   - finally the right node
+- left node first
+- then current node
+- finally the right node
 3. Post-Order
-   - left node first
-   - then right node
-   - finally the current node
+- left node first
+- then right node
+- finally the current node
 
 **For graph:**
 
 1. Pre-Order
-   - same order as the DFS (top -> down in terms of depth)
+- same order as the DFS (top -> down in terms of depth)
 2. Post-Order
-   - the order that the vertex finishes their visiting (e.g., 1->2->3 then, 3 is the first node that finishes it's visiting, then 2, and then 1)
+- the order that the vertex finishes their visiting (e.g., 1->2->3 then, 3 is the first node that finishes it's visiting, then 2, and then 1)
 
 **Implementation:**
 
 ```
 void dfs(Digraph g, int v) {
-    preOrder.offer(v);
-    marked[v] = true;
-    for (int w : g.adjacent(v)) {
-        if (!marked[w]) {
-            dfs(g, w);
-        }
+preOrder.offer(v);
+marked[v] = true;
+for (int w : g.adjacent(v)) {
+    if (!marked[w]) {
+        dfs(g, w);
     }
-    postOrder.offer(v);
+}
+postOrder.offer(v);
 }
 ```
 
-### 4.11 Topological Ordering
+## 4.11 Topological Ordering
 
 拓扑排序
 
@@ -2263,17 +2125,17 @@ Topological Ordering is the reverse post-order of DAG. It can be used for task s
 
 ```
 void dfs(Digraph g, int v) {
-    marked[v] = true;
-    for (int w : g.adjacent(v)) {
-        if (!marked[w]) {
-            dfs(g, w);
-        }
+marked[v] = true;
+for (int w : g.adjacent(v)) {
+    if (!marked[w]) {
+        dfs(g, w);
     }
-    reversePostOrder.offerFirst(v);
+}
+reversePostOrder.offerFirst(v);
 }
 ```
 
-### 4.12 Strongly Connected Components
+## 4.12 Strongly Connected Components
 
 强连通性
 
@@ -2286,7 +2148,7 @@ Connectivity:
 
 In Strongly Connected Components (SCC), any two vertices are strongly connected. A DAG with N nodes has N SCCs. A strongly connected graph has only one SCC.
 
-### 4.13 Kosaraju Algorithm For Finding SCC
+## 4.13 Kosaraju Algorithm For Finding SCC
 
 (p.379)
 
@@ -2300,36 +2162,36 @@ Algorithm:
 
 ```
 public KosarajuSCC(Digraph g) {
-    marked = new boolean[g.vertices()];
-    scc = new ArrayList<>();
-    sccIds = new int[g.vertices()];
-    Iterable<Integer> reversePostOrder = new DepthFirstOrder(g.reverse())
-            .reversePostOrder();
+marked = new boolean[g.vertices()];
+scc = new ArrayList<>();
+sccIds = new int[g.vertices()];
+Iterable<Integer> reversePostOrder = new DepthFirstOrder(g.reverse())
+        .reversePostOrder();
 
-    for (int v : reversePostOrder) {
-        if (!marked[v]) {
-            List<Integer> l = new ArrayList<Integer>();
-            ++count;
-            dfs(g, v, l);
-            scc.add(l);
-        }
+for (int v : reversePostOrder) {
+    if (!marked[v]) {
+        List<Integer> l = new ArrayList<Integer>();
+        ++count;
+        dfs(g, v, l);
+        scc.add(l);
     }
+}
 
 }
 
 private void dfs(Digraph g, int v, List<Integer> scc) {
-    marked[v] = true;
-    scc.add(v);
-    sccIds[v] = count;
-    for (int w : g.adjacent(v)) {
-        if (!marked[w])
-            dfs(g, w, scc);
-    }
+marked[v] = true;
+scc.add(v);
+sccIds[v] = count;
+for (int w : g.adjacent(v)) {
+    if (!marked[w])
+        dfs(g, w, scc);
+}
 }
 
 ```
 
-### 4.14 Weighted Graph
+## 4.14 Weighted Graph
 
 (p.394)
 
@@ -2339,17 +2201,17 @@ In weighted graph, edge is assigned a weight. To implement weighted graph, we co
 
 ```
 public class Edge implements Comparable<Edge> {
-    private final int v;
-    private final int w;
-    private final double weight;
+private final int v;
+private final int w;
+private final double weight;
 
-    public Edge(int v, int w, double weight) {
-        this.v = v;
-        this.w = w;
-        this.weight = weight;
-    }
+public Edge(int v, int w, double weight) {
+    this.v = v;
+    this.w = w;
+    this.weight = weight;
+}
 
-    // ...
+// ...
 }
 ```
 
@@ -2360,33 +2222,33 @@ Below is a undirected weighted graph. What is really different is that the adjac
 ```
 public class EdgeWeightedGraph {
 
-    protected int V;
-    protected int E;
-    protected List<Edge>[] adjacencyList;
+protected int V;
+protected int E;
+protected List<Edge>[] adjacencyList;
 
-    public EdgeWeightedGraph(int V) {
-        this.V = V;
-        this.E = 0;
-        adjacencyList = emptyAdjacencyList(V);
-        emptyAdjacencyList(vertices());
-    }
+public EdgeWeightedGraph(int V) {
+    this.V = V;
+    this.E = 0;
+    adjacencyList = emptyAdjacencyList(V);
+    emptyAdjacencyList(vertices());
+}
 
-    public Iterable<Edge> adjacent(int v) {
-        return adjacencyList[v];
-    }
+public Iterable<Edge> adjacent(int v) {
+    return adjacencyList[v];
+}
 
-    public Iterable<Integer> adjVertices(int v) {
-        List<Integer> neighbours = new ArrayList<>();
-        Iterable<Edge> el = adjacent(v);
-        el.forEach(e -> neighbours.add(e.w()));
-        return neighbours;
-    }
+public Iterable<Integer> adjVertices(int v) {
+    List<Integer> neighbours = new ArrayList<>();
+    Iterable<Edge> el = adjacent(v);
+    el.forEach(e -> neighbours.add(e.w()));
+    return neighbours;
+}
 
-    public void addEdge(Edge e) {
-        adjacencyList[e.v()].add(e);
-        adjacencyList[e.w()].add(e);
-        E++;
-    }
+public void addEdge(Edge e) {
+    adjacencyList[e.v()].add(e);
+    adjacencyList[e.w()].add(e);
+    E++;
+}
 }
 ```
 
@@ -2394,7 +2256,475 @@ The example above is a undirected weighted graph, if it's directed, we just chan
 
 ```
 public void addEdge(Edge e) {
-    adjacencyList[e.v()].add(e);
-    E++;
+adjacencyList[e.v()].add(e);
+E++;
+}
+```
+
+## 4.15 Minimum Spanning Tree MST
+
+(p.390)
+
+Minimum Spanning Tree is a spanning tree that has the minimum sum of weight of edges used to connect all the vertices. 树中所有边的权重之和最小。
+
+**原理:**
+
+1. 用一条边连接书中的任意两个顶点都会产生一个新的环
+2. 从书中删去一条边会得到两棵独立的树
+
+其实就是一颗无环树加上连通图所带来的特性.
+
+**切分定理 (Cut Property):**
+
+- 切分定理将连通图中的所有顶点分为两个不重合的集合，对连通图的边进行切分, 而连接两个集合的边为**横切边**
+- 在一个加权图中，给定任意的切分，它的横切边中最小者必然属于 MST 
+- (假如两个集合之间有三条边, 最小的那条肯定属于MST, 但不代表剩下的两条边不属于 MST)
+
+找到最小生成树是基于切分定理, 也就是不断重复的使用切分定理进行切分, 直到找到最小生成树的所有边 (包含所有顶点就算结束). 把图分成两个集合, 一个是未连通的, 另一个是已经连通了的包含在 MST 内的节点集合, 从任意节点 `v` 开始, 查看连接了 `v` 的所有边, 设边的另一头的节点为 `w`, 找到未连通的节点 `w`, 找到集合中连接到 `w` 最小的边，把这条边纳入 MST 内, 然后重复这个步骤.
+
+## 4.16 Lazy Prim MST
+
+```
+public class LazyPrimMST {
+private boolean[] marked;
+private Queue<Edge> mst;
+private PriorityQueue<Edge> minpq;
+
+public LazyPrimMST(EdgeWeightedGraph g) {
+    marked = new boolean[g.vertices()];
+    mst = new LinkedList<>();
+    minpq = new PriorityQueue<>();
+    visit(g, 0); // start from random vertex, here we visit the vertex at 0 
+    int v, w;
+    while (!minpq.isEmpty()) {
+        // always use the edge with minimal weight
+        Edge minEdge = minpq.poll(); 
+        v = minEdge.v();
+        w = minEdge.w();
+
+        // both vertices are in the MST already, skip
+        if (marked[v] && marked[w]) 
+            continue;
+
+        mst.offer(minEdge);
+        // continue expanding MST
+        if (!marked[v])
+            visit(g, v);
+        if (!marked[w])
+            visit(g, w);
+    }
+}
+
+private void visit(EdgeWeightedGraph g, int v) {
+    marked[v] = true;
+    for (Edge e : g.adjacent(v)) {
+        if (!marked[e.other(v)])
+            minpq.add(e);
+    }
+}
+```
+
+## 4.17 Shortest Path Tree SPT
+
+SPT is a tree rooted at `'S` that contains the shortest paths from `'S` to any vertexes `'V(s)`. From root `'S`, to any vertex `'V`, there might be multiple parts connected, we want to keep the one with minimum weight, we do so by **edge relaxation 松弛**, 这包含**边的松弛**和**顶点的松弛**。
+
+**边的松弛**
+
+- 对于边的松弛，如果我们有边 v->w, s 为根节点, 我们比较 s->...->w 和 s->v->w 的权重哪个更小, 本质上就是看我们是否经过 v。因为我们总是从 s 出发, 所以当我们要松弛边 v->w 的时候, 我们是知道 s->v 的距离的, 而 v->w 的距离就是这条边的权重，所以我们能计算出 s->v->w 的权重, 如果当我们松弛这个边时，我们还没有见过 w, 那么 s->...->w 则为 +INF, 那我们在这种情况选择 s->v->w。 
+
+```
+protected void relax(Edge e) {
+int v = e.v();
+int w = e.w();
+double vTow = distTo[v] + e.weight();
+// path->v->w is shorter than path->w
+if (distTo[w] > vTow) {
+    distTo[w] = vTow;
+    edgeTo[w] = e;
+}
+}
+```
+
+**顶点的松弛**
+
+- 对于顶点的松弛，我们松弛顶点所连接的所有边
+
+每当我们添加一个顶点, 我们松弛这个顶点, 也就是这个顶点连接的所有边，如果新的顶点添加进来, 导致存在 s->...->w 大于 s->v->w 的情况, 我们就可以设连接到 w 的最短路径为 s->v->w.
+
+```
+protected void relax(EdgeWeightedGraph g, int v) {
+for (Edge e : g.adjacent(v)) {
+    relax(e);
+}
+}
+```
+
+## 4.18 Shortest Path for Weighted DAG
+
+Algorithm:
+
+1. 找到 DAG topological order
+2. 按照 topological order 进行顶点的松弛
+
+Implementation:
+
+```
+import java.util.*;
+
+public class AcyclicShortestPath {
+
+private double[] distTo;
+private Edge[] edgeTo;
+
+public AcyclicShortestPath(EdgeWeightedDigraph g, int source) {
+    distTo = new double[g.vertices()];
+    edgeTo = new Edge[g.vertices()];
+    Arrays.fill(distTo, Double.POSITIVE_INFINITY);
+    Arrays.fill(edgeTo, null);
+    distTo[source] = 0.0;
+
+    // 1. Get topological order/ most-dependent
+    Topological topo = new Topological(g);
+
+    // 2. relax vertices based on topological order
+    for (int v : topo.order())
+        relax(g, v);
+}
+
+protected void relax(Edge e) {
+    int v = e.v();
+    int w = e.w();
+    double vTow = distTo[v] + e.weight();
+    // path->v->w is shorter than path->w
+    if (distTo[w] > vTow) {
+        distTo[w] = vTow;
+        edgeTo[w] = e;
+    }
+}
+
+protected void relax(EdgeWeightedGraph g, int v) {
+    for (Edge e : g.adjacent(v)) {
+        relax(e);
+    }
+}
+
+public double distTo(int v) {
+    return distTo[v];
+}
+
+public boolean hasPathTo(int v) {
+    return distTo[v] != Double.POSITIVE_INFINITY;
+}
+
+public Iterable<Edge> pathTo(int v) {
+    if (!hasPathTo(v))
+        return new LinkedList<>();
+    Deque<Edge> path = new LinkedList<Edge>();
+    for (Edge e = edgeTo[v]; e != null; e = edgeTo[e.v()]) { // from v move backward to source
+        path.offerFirst(e);
+    }
+    return path;
+}
+}
+```
+
+## 4.19 Critical Path Method CPM
+
+CPM 就是找到 DAG 中的最长路径, 此路径为 critical path. 实现只需要稍微改下上面的算法中 relax(Edge e) 即可。
+
+# Chapter 5
+
+## 5.1 Key Indexed Counting 键索引计数法
+
+此算法适用于字符串或者数字, 算法分为以下三个步骤:
+
+1. 计算键出现频率
+- 假如我们在为数字排序, 我们知道数字的范围为 0-9, 那么我们准备 10 个桶, 第一个桶就是装值为 0 的数, 因为可以有多个 0, 我们只用在第一个桶记出现了多少个 0 即可
+2. 将频率转为索引
+- 我们知道了键出现的频率, 我们也知道怎么排先后, 我们就可以直接计算从哪个位置开始, 有多少个某个键, 如, 第一个桶有 3 个 0, 第二个桶有 4 个 1, 我们就直接知道位置 3-7 是 1. 在这一步, 我们把这个索引的位置计算出来
+3. 将元素分类
+- 也就是计算出来的索引将键放到正确的位置 
+- 假设有 3 个 0, 第 k 个数为 0, 则有 `key[k] = 0`, 然后我们查索引 `count[key[k]]` 也就是 `count[0]`, 因为我们不止有 1 个 0, 我们获得索引后增加这个值 `count[0]++`, 然后我们把就键放到正确位置 `sorted[pos] = key[k]`. 
+
+Implementation:
+
+```
+public static int[] sort(int[] key, final int R) {
+int count[] = new int[R + 1];
+for (int i = 0; i < key.length; i++)
+    count[key[i] + 1] += 1;
+
+for (int i = 0; i < R; i++)
+    count[i + 1] += count[i];
+
+int[] sorted = new int[key.length];
+for (int i = 0; i < key.length; i++) {
+    int pos = count[key[i]]++;
+    sorted[pos] = key[i];
+}
+return sorted;
+}
+```
+
+## 5.2 Least Significant Digit (LSD) Radix Sort 低位优先排序
+
+In LSD, to sort a list of strings, it starts from W-1 towards 0, putting the strings in correct position in each iteration. Regardless of what the W is, it should always at least sort the first character for these strings as the last iteration, such that they are always sorted in terms of their first W characters.
+
+Implementation:
+
+```
+/**
+* Sort strings using LSD algorithm. The first {@code W} characters are used as
+* keys (only one char is used for each sorting) for sorting. This algorithm is
+* stable. O(W*N)
+* 
+* @param a string array
+* @param W the first W characters used for sorting, starting at W-1
+*/
+public static void sort(String[] a, final int W) {
+// ASCII charset
+final int R = 256;
+String[] aux = new String[a.length];
+
+for (int k = W - 1; k >= 0; k--) {
+
+    int[] count = new int[R + 1];
+    // count frequency
+    for (int i = 0; i < a.length; i++) {
+        count[a[i].charAt(k) + 1]++;
+    }
+    // convert frequency to starting indices
+    for (int i = 0; i < R; i++) {
+        count[i + 1] += count[i];
+    }
+    // copy to temp
+    for (int i = 0; i < a.length; i++) {
+        aux[count[a[i].charAt(k)]++] = a[i];
+    }
+    // write back to the original array
+    for (int i = 0; i < a.length; i++) {
+        a[i] = aux[i];
+    }
+}
+}
+```
+
+## 5.3 Most Significant Digit (MSD) Radix Sort 高位优先排序 
+
+高位优先排序是按从左往右的顺序, 特别是当字符串的长度不一致的时候, 我们只能使用高位优先算法. 左往右排序意味着我们需要使用递归的方式进行计算, 当我们在第 k 个字符的时候, 我们不需要考虑 k-1 的字符, 就像重新进行了 k 和 k 字符后面的排序, 这种符合子问题的规律。
+
+```
+/**
+* Sort
+*
+* @param a array
+* @param l lower bound (inclusive)
+* @param h upper bound (inclusive)
+* @param k index of the char that is used as key for sorting
+*/
+private static void sort(String[] a, int l, int h, int k) {
+// overlap, break recursion
+if (l >= h)
+    return;
+
+int[] count = new int[R + 2];
+
+// if k is greater than a[i] string's length, just put it at the front at count[1]
+// count[0] is always 0, it's never used
+for (int i = l; i <= h; i++) {
+    if (a[i].length() >= k)
+        count[a[i].charAt(k) + 2]++;
+    else
+        count[1]++;
+}
+
+for (int r = 0; r < R + 1; r++)
+    count[r + 1] += count[r];
+
+for (int i = l; i <= h; i++)
+    aux[count[charAt(a[i], k) + 1]++] = a[i];
+
+for (int i = l; i <= h; i++)
+    a[i] = aux[i - l];
+
+// sort sub-groups
+// r = 0
+// [l , (l + count[1] - 1)]
+// r = 1
+// [l + count[1], l + count[2] - 1]
+// r = 2
+// [l + count[2], l + count[3] - 1]
+for (int r = 0; r < R; r++)
+    sort(a, l + count[r], l + count[r + 1] - 1, k + 1);
+}
+```
+
+## 5.4 Three-Way String Sorting
+
+Just like LSD and MSD, strings are sorted by the Kth character for every iteration or recursion, for this algorithm, we chose a random Kth character value as the pivot, and we partition the strings by this pivot value and the Kth character into three parts, the idea is generally the same as the three-way quick sort.
+
+Implementation:
+
+```
+public static void sort(String[] a, int l, int h, int k) {
+if (l > h)
+    return;
+int pivot = charAt(a[l], k);
+int lp = l;
+int hp = h;
+int ep = l + 1; // pointer for values equal to pivot
+while (ep <= hp) {
+    int epv = charAt(a[ep], k);
+    if (epv < pivot) {
+        swap(a, lp++, ep++); // move backward
+    } else if (epv > pivot) {
+        swap(a, ep, hp--); // ep not moved, because ep might not be sorted
+    } else {
+        ep++;
+    }
+}
+// a[l...lp-1] are elements < pivot
+// a[lp...hp] are elements = pivot
+// a[hp+1...h] are elements > pivot
+sort(a, l, lp - 1, k);
+if (pivot >= 0) // end of strings, sorted
+    sort(a, lp, hp, k + 1);
+sort(a, hp + 1, h, k);
+}
+```
+
+## 5.5 Trie
+
+For a character of R characters, in a simple Trie, each node can have R children. E.g., in ASCII, R=256, then each node can have 256 children. One or more strings are represented by a tree-like structure called Trie, as we are traversing each string, characters are added to the Trie if not exists. The root node is the first character of the first string.
+
+Implementation for node:
+
+```
+private static class TNode {
+private boolean isWordEnd = false;
+private TNode[] next = new TNode[R];
+}
+```
+
+Implementation of the R-node Trie:
+
+```
+public class TrieSt {
+
+    private static final int R = 256;
+    private TNode root = null;
+    private int size;
+
+    public void delete(String key) {
+        root = delete(root, key, 0);
+    }
+
+    private TNode delete(TNode n, String key, int idx) {
+        // not found
+        if (n == null)
+            return null;
+
+        // remove current node
+        if (idx == key.length() && n.isWordEnd) {
+            size--;
+            return null;
+        }
+
+        // we are not there yet, continue traversing
+        if (idx < key.length()) {
+            TNode next = n.next[key.charAt(idx)];
+            n.next[key.charAt(idx)] = delete(next, key, idx + 1);
+        }
+
+        if (n.isWordEnd)
+            return n;
+
+        for (int i = 0; i < R; i++) {
+            if (n.next[i] != null) {
+                // has children
+                return n;
+            }
+        }
+        return null;
+    }
+
+    public boolean contains(String key) {
+        TNode n = get(root, key, 0);
+        return n == null ? false : n.isWordEnd;
+    }
+
+    private TNode get(TNode n, String key, int idx) {
+        if (n == null) {
+            return null;
+        }
+        if (idx == key.length())
+            return n;
+        else
+            return get(n.next[key.charAt(idx)], key, idx + 1);
+    }
+
+    public void put(String key) {
+        int i = 0;
+        ++size;
+        root = put(root, key, i);
+    }
+
+    private TNode put(TNode n, String key, int d) {
+        if (n == null)
+            n = new TNode();
+
+        if (d == key.length()) {
+            if (!n.isWordEnd) {
+                n.isWordEnd = true;
+            } else {
+                size--; // there is one already, duplicate found
+            }
+            return n;
+        }
+
+        TNode next = n.next[key.charAt(d)];
+        n.next[key.charAt(d)] = put(next, key, d + 1);
+        return n;
+    }
+}
+```
+
+## 5.6 Three-Way Trie
+
+Three-way trie is just like R-nodes Trie, except that we now don't have R number of nodes, we only have left, mid, right. We compare character values for traversal, the idea is the same.
+
+## 5.7 Knuth-Morris-Pratt KMP 
+
+```
+// compute suffix of previous longest prefix
+// ababc, if we fail at c, lps[4] = 2, because 2th is next character of previous "ab"
+private void longestPrefixSuffix() {
+    int len = 0;
+    for (int i = 1; i < pat.length(); i++) {
+        while (len > 0 && pat.charAt(len) != pat.charAt(i)) {
+            len = lps[len - 1];
+        }
+        if (pat.charAt(len) == pat.charAt(i)) {
+            len++;
+        }
+        lps[i] = len;
+    }
+}
+
+public int match(String txt) {
+    int j = 0;
+
+    for (int i = 0; i < txt.length(); i++) {
+        while (j > 0 && pat.charAt(j) != txt.charAt(i)) {
+            j = lps[j - 1];
+        }
+        if (pat.charAt(j) == txt.charAt(i)) {
+            j++;
+        }
+        if (j == pat.length()) {
+            return i - pat.length() + 1;
+        }
+    }
+    return -1;
 }
 ```
